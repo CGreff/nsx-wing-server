@@ -1,0 +1,5 @@
+rootProject.name = 'nsx-wing-server'
+
+include 'nsx-wing-server-core',
+        'nsx-wing-server-app'
+

@@ -1,0 +1,19 @@
+description = 'The runnable component of the NSXWing Server'
+
+apply plugin: 'application'
+
+def mainClass = 'com.nsxwing.server.main.Server'
+mainClassName = mainClass
+
+startScripts {
+    mainClassName   = mainClass
+}
+
+dependencies {
+    compile(
+            project(':nsx-wing-server-core')
+    )
+    runtime(
+            [group: 'ch.qos.logback', name: 'logback-classic',  version: project.logbackVersion],
+    )
+}

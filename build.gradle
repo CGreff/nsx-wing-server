@@ -1,0 +1,37 @@
+allprojects {
+    group   = 'com.nsxwing'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+
+        options.fork = true
+        options.encoding = "UTF-8"
+    }
+
+    dependencies {
+        testCompile(
+                [group: 'org.slf4j', name: 'log4j-over-slf4j', version: project.slf4jVersion],
+                [group: 'org.slf4j', name: 'jcl-over-slf4j', version: project.slf4jVersion],
+        )
+        testCompile(group: 'junit', name: 'junit', version: project.junitVersion) {
+            exclude module: 'hamcrest-core'
+        }
+
+        compile(
+                [group: 'org.projectlombok', name: 'lombok', version: project.lombokVersion],
+                [group: 'org.slf4j', name: 'slf4j-api', version: project.slf4jVersion],
+        )
+    }
+
+}
