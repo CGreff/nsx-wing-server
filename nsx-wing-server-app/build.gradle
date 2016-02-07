@@ -2,7 +2,7 @@ description = 'The runnable component of the NSXWing Server'
 
 apply plugin: 'application'
 
-def mainClass = 'com.nsxwing.server.main.Server'
+def mainClass = 'com.nsxwing.server.main.App'
 mainClassName = mainClass
 
 startScripts {
