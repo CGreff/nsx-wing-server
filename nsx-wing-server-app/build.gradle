@@ -10,9 +10,10 @@ startScripts {
 }
 
 dependencies {
-    compile(
-            project(':nsx-wing-server-core')
-    )
+    compile project(':nsx-wing-server-core')
+
+    compile "com.nsxwing.common:nsx-wing-common-game:${project.nsxWingCommonVersion}"
+
     runtime(
             [group: 'ch.qos.logback', name: 'logback-classic',  version: project.logbackVersion],
     )
