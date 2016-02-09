@@ -1,8 +1,9 @@
 allprojects {
-	group = 'com.nsxwing'
-	version = '1.0-SNAPSHOT'
+	group = 'com.nsxwing.server'
+	version = '1.0.0'
 
 	repositories {
+		mavenLocal()
 		mavenCentral()
 		jcenter()
 	}

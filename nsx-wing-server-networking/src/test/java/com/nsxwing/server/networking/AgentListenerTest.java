@@ -1,6 +1,6 @@
 package com.nsxwing.server.networking;
 
-import com.nsxwing.server.event.GameEvent;
+import com.nsxwing.common.event.GameEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,7 +11,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

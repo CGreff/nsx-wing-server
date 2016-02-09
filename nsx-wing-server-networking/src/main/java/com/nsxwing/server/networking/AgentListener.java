@@ -1,6 +1,6 @@
 package com.nsxwing.server.networking;
 
-import com.nsxwing.server.event.GameEvent;
+import com.nsxwing.common.event.GameEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
