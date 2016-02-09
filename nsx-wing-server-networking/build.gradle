@@ -3,7 +3,7 @@ description = 'The networking components of the NSXWing Server'
 dependencies {
 	compile project(':nsx-wing-server-core')
 
-	compile "com.nsxwing.common:nsx-wing-common-game:0.1.0"
+	compile "com.nsxwing.common:nsx-wing-common-game:${project.nsxWingCommonVersion}"
 
 	runtime([group: 'ch.qos.logback', name: 'logback-classic',  version: project.logbackVersion])
 }
