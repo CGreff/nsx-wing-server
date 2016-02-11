@@ -15,9 +15,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AgentListenerTest {
+public class AgentCommunicatorTest {
 
-    private AgentListener underTest;
+    private AgentCommunicator underTest;
 
     @Mock
     private ServerSocket serverSocket;
@@ -29,7 +29,7 @@ public class AgentListenerTest {
     public void setUp() throws IOException {
 		MockitoAnnotations.initMocks(this);
 
-        underTest = new AgentListener(serverSocket);
+        underTest = new AgentCommunicator(serverSocket);
 
 		when(serverSocket.accept()).thenReturn(socket);
     }
