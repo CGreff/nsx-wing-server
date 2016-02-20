@@ -1,28 +1,32 @@
 package com.nsxwing.server.networking;
 
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.nsxwing.common.event.server.ActionEvent;
-import com.nsxwing.common.networking.config.KryoNetwork;
+import com.nsxwing.common.event.GameEvent;
 
 import java.io.IOException;
+
+import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
+import static com.nsxwing.common.networking.config.KryoNetwork.register;
 
 public class GameServer {
 
 	private Server server;
 
-	public GameServer() throws IOException {
-		server = new Server();
+	public GameServer(Server server) throws IOException {
+		this.server = server;
 
-		KryoNetwork.register(server);
+		register(server);
 
-		server.bind(KryoNetwork.port);
+		server.bind(PORT);
 		server.start();
+
+		server.addListener(new GameEventListener());
 	}
 
-	public void broadcastActionEvent() {
-		server.sendToAllTCP(new ActionEvent());
+	public void broadcastEvent(GameEvent event) {
+		server.sendToAllTCP(event);
 	}
+
+
 }
 

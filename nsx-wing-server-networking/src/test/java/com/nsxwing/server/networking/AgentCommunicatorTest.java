@@ -1,6 +1,7 @@
 package com.nsxwing.server.networking;
 
 import com.nsxwing.common.event.GameEvent;
+import com.nsxwing.common.event.server.ActionEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -43,6 +44,6 @@ public class AgentCommunicatorTest {
 
 	@Test
 	public void shouldReturnAGameEvent() {
-		assertThat(underTest.listen(), instanceOf(GameEvent.class));
+		assertThat(underTest.listen(ActionEvent.class), instanceOf(GameEvent.class));
 	}
 }
