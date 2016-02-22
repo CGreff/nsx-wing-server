@@ -2,17 +2,14 @@ package com.nsxwing.server.networking;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
-import com.nsxwing.common.event.GameEvent;
-import com.nsxwing.common.networking.config.KryoNetwork;
+import com.nsxwing.common.networking.io.event.GameEvent;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -57,7 +54,7 @@ public class GameServerTest {
 	public void shouldAddAGameEventListener() {
 		underTest = new GameServer(server);
 
-		verify(server).addListener(isA(GameEventListener.class));
+		verify(server).addListener(isA(GameResponseListener.class));
 	}
 
 	@Test

@@ -1,7 +1,7 @@
 package com.nsxwing.server.main;
 
 import com.esotericsoftware.kryonet.Server;
-import com.nsxwing.common.event.server.ActionEvent;
+import com.nsxwing.common.networking.io.event.ActionEvent;
 import com.nsxwing.server.networking.GameServer;
 import lombok.extern.slf4j.Slf4j;
 

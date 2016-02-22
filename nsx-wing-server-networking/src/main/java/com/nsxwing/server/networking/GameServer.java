@@ -1,7 +1,7 @@
 package com.nsxwing.server.networking;
 
 import com.esotericsoftware.kryonet.Server;
-import com.nsxwing.common.event.GameEvent;
+import com.nsxwing.common.networking.io.event.GameEvent;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class GameServer {
 		server.bind(PORT);
 		server.start();
 
-		server.addListener(new GameEventListener());
+		server.addListener(new GameResponseListener());
 	}
 
 	public void broadcastEvent(GameEvent event) {
