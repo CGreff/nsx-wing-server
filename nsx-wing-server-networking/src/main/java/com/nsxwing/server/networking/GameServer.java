@@ -12,15 +12,20 @@ public class GameServer {
 
 	private Server server;
 
-	public GameServer(Server server) throws IOException {
+	public GameServer(Server server, GameResponseListener listener) {
 		this.server = server;
 
 		register(server);
 
-		server.bind(PORT);
+		//TODO: Distant future - use env property for this + client-side.
+		try {
+			server.bind(PORT);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		server.start();
 
-		server.addListener(new GameResponseListener());
+		server.addListener(listener);
 	}
 
 	public void broadcastEvent(GameEvent event) {

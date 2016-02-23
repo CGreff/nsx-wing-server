@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -20,6 +19,9 @@ public class GameServerTest {
 
 	@Mock
 	private Server server;
+
+	@Mock
+	private GameResponseListener listener;
 
 	@Mock
 	private Kryo kryo;
@@ -36,7 +38,7 @@ public class GameServerTest {
 	@Test
 	@SneakyThrows
 	public void shouldStartServer() {
-		underTest = new GameServer(server);
+		underTest = new GameServer(server, listener);
 
 		verify(server).start();
 	}
@@ -44,7 +46,7 @@ public class GameServerTest {
 	@Test
 	@SneakyThrows
 	public void shouldBindToCorrectPort() {
-		underTest = new GameServer(server);
+		underTest = new GameServer(server, listener);
 
 		verify(server).bind(PORT);
 	}
@@ -52,15 +54,15 @@ public class GameServerTest {
 	@Test
 	@SneakyThrows
 	public void shouldAddAGameEventListener() {
-		underTest = new GameServer(server);
+		underTest = new GameServer(server, listener);
 
-		verify(server).addListener(isA(GameResponseListener.class));
+		verify(server).addListener(listener);
 	}
 
 	@Test
 	@SneakyThrows
 	public void shouldBroadcastSpecifiedEvent() {
-		underTest = new GameServer(server);
+		underTest = new GameServer(server, listener);
 		underTest.broadcastEvent(event);
 
 		verify(server).sendToAllTCP(event);

@@ -11,7 +11,5 @@ public abstract class Phase {
 		return handledChamp && handledScrub;
 	}
 
-	public void applyResponse(GameResponse response) {
-
-	}
+	public abstract void applyResponse(GameResponse response);
 }
