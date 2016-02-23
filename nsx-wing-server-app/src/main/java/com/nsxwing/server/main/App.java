@@ -16,7 +16,7 @@ public class App {
 				Thread.sleep(5000);
 			}
 		} catch (Exception e) {
-			System.out.println("Whoopsie daisy.");
+			log.info("Whoopsie daisy.");
 		}
 	}
 
