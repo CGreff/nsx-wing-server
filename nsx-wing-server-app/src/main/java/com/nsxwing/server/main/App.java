@@ -12,6 +12,7 @@ import com.nsxwing.server.networking.GameServer;
 import com.nsxwing.server.networking.engine.EventEngine;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -27,6 +28,13 @@ public class App {
 		GameServer gameServer = new GameServer(new Server(), new GameResponseListener(phaseEngine));
 
 		EventEngine eventEngine = new EventEngine(gameServer, phaseEngine);
+
+		try {
+			gameServer.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
 		while (true) {
 			gameServer.broadcastEvent(new ActionEvent());

@@ -4,12 +4,14 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.common.networking.config.KryoNetwork;
 import com.nsxwing.common.networking.io.event.GameEvent;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 
+@Slf4j
 public class GameServer {
 
 	private final GameResponseListener listener;
@@ -38,7 +40,4 @@ public class GameServer {
 			server.sendToAllTCP(event);
 		}
 	}
-
-
 }
-

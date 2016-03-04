@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class GameResponseListenerTest {
 
@@ -39,8 +40,10 @@ public class GameResponseListenerTest {
 		verifyNoMoreInteractions(phaseEngine);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void shouldThrowExceptionWhenReceivingBadObject() {
+	@Test
+	public void shouldDoNothingWhenReceivingBadObject() {
 		underTest.received(connection, new String());
+
+		verifyZeroInteractions(phaseEngine);
 	}
 }

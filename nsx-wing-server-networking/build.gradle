@@ -6,6 +6,4 @@ dependencies {
 	compile "com.nsxwing.common:nsx-wing-common-game:${project.nsxWingCommonVersion}"
 	compile "com.nsxwing.common:nsx-wing-common-networking:${project.nsxWingCommonVersion}"
 	compile "com.esotericsoftware:kryonet:${project.kryonetVersion}"
-
-	runtime([group: 'ch.qos.logback', name: 'logback-classic',  version: project.logbackVersion])
 }

@@ -24,6 +24,7 @@ subprojects {
 		compile "org.projectlombok:lombok:${project.lombokVersion}"
 		compile "org.slf4j:slf4j-api:${project.slf4jVersion}"
 
+		runtime "ch.qos.logback:logback-classic:${project.logbackVersion}"
 
 		testCompile "org.slf4j:log4j-over-slf4j:${project.slf4jVersion}"
 		testCompile "org.slf4j:jcl-over-slf4j:${project.slf4jVersion}"
