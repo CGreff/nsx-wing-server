@@ -18,8 +18,9 @@ public class GameResponseListener extends Listener {
 	@Override
 	public void received (Connection connection, Object object) {
 		if (object instanceof GameResponse) {
-			GameResponse response = (GameResponse) object;
-			phaseEngine.handleResponse(response);
+			phaseEngine.handleResponse((GameResponse) object);
+		} else {
+			throw new IllegalArgumentException("Server expected Game Response but got: " + object);
 		}
 	}
 

@@ -25,7 +25,7 @@ public class App {
 		PhaseEngine phaseEngine = new PhaseEngine(phases);
 
 		GameServer gameServer = new GameServer(new Server(), new GameResponseListener(phaseEngine));
-		
+
 		EventEngine eventEngine = new EventEngine(gameServer, phaseEngine);
 
 		while (true) {
