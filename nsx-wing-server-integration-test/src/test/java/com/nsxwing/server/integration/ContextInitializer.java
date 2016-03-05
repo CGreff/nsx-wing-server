@@ -1,13 +1,11 @@
 package com.nsxwing.server.integration;
 
-import com.nsxwing.server.config.AppContext;
 import com.nsxwing.server.game.GameCoordinator;
 import com.nsxwing.server.game.GameEngine;
-import com.nsxwing.server.integration.client.MockClient;
 import com.nsxwing.server.game.networking.GameServer;
+import com.nsxwing.server.integration.client.MockClient;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
 import org.junit.Before;
 
 import java.util.Optional;
@@ -55,10 +53,5 @@ public class ContextInitializer {
 
 		gameEngine = engineOptional.get();
 		log.info("Got a Game Engine. Running tests.");
-	}
-
-	@After
-	public void tearDown() {
-		//TODO
 	}
 }
