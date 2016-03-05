@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.function.Consumer;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -94,5 +95,13 @@ public class GameServerTest {
 		underTest.broadcastEvent(event);
 
 		verify(server).sendToAllTCP(event);
+	}
+
+	@Test
+	@SneakyThrows
+	public void shouldReportIfItsRunning() {
+		underTest.start();
+
+		assertTrue(underTest.isRunning());
 	}
 }

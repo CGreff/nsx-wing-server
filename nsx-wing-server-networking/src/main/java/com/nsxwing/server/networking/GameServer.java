@@ -40,4 +40,8 @@ public class GameServer {
 			server.sendToAllTCP(event);
 		}
 	}
+
+	public boolean isRunning() {
+		return isRunning;
+	}
 }
