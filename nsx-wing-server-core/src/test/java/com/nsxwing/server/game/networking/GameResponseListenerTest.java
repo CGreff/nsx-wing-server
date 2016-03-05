@@ -1,7 +1,9 @@
-package com.nsxwing.server.networking;
+package com.nsxwing.server.game.networking;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
+import com.nsxwing.server.game.GameCoordinator;
 import com.nsxwing.server.game.engine.PhaseEngine;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,9 @@ public class GameResponseListenerTest {
 	private PhaseEngine phaseEngine;
 
 	@Mock
+	private GameCoordinator gameCoordinator;
+
+	@Mock
 	private Connection connection;
 
 	@Mock
@@ -38,6 +43,13 @@ public class GameResponseListenerTest {
 
 		verify(phaseEngine).handleResponse(response);
 		verifyNoMoreInteractions(phaseEngine);
+	}
+
+	@Test
+	public void shouldCreateAPlayerWhenCalledWithConnectionEvent() {
+		underTest.received(connection, new ConnectionEvent());
+
+		verify(gameCoordinator).connectPlayer(connection);
 	}
 
 	@Test

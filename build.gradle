@@ -23,13 +23,12 @@ subprojects {
 	dependencies {
 		compile "org.projectlombok:lombok:${project.lombokVersion}"
 		compile "org.slf4j:slf4j-api:${project.slf4jVersion}"
+		compile "ch.qos.logback:logback-classic:${project.logbackVersion}"
 
-		runtime "ch.qos.logback:logback-classic:${project.logbackVersion}"
-
+		testCompile "junit:junit:${project.junitVersion}"
+		testCompile "org.mockito:mockito-core:${project.mockitoVersion}"
 		testCompile "org.slf4j:log4j-over-slf4j:${project.slf4jVersion}"
 		testCompile "org.slf4j:jcl-over-slf4j:${project.slf4jVersion}"
-		testCompile "org.mockito:mockito-core:${project.mockitoVersion}"
-		testCompile "junit:junit:${project.junitVersion}"
 	}
 
 }

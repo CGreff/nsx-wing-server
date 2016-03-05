@@ -1,9 +1,0 @@
-description = 'The networking components of the NSXWing Server'
-
-dependencies {
-	compile project(':nsx-wing-server-core')
-
-	compile "com.nsxwing.common:nsx-wing-common-game:${project.nsxWingCommonVersion}"
-	compile "com.nsxwing.common:nsx-wing-common-networking:${project.nsxWingCommonVersion}"
-	compile "com.esotericsoftware:kryonet:${project.kryonetVersion}"
-}

@@ -1,0 +1,5 @@
+description = 'Integration tests for the NSXWing Server'
+
+dependencies {
+    compile project(':nsx-wing-server-app')
+}
