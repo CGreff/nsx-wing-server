@@ -43,9 +43,10 @@ public class GameResponseListenerTest {
 
 	@Test
 	public void shouldCreateAPlayerWhenCalledWithConnectionEvent() {
-		underTest.received(connection, new ConnectionEvent());
+		ConnectionEvent connectionEvent = new ConnectionEvent();
+		underTest.received(connection, connectionEvent);
 
-		verify(gameCoordinator).connectPlayer(connection);
+		verify(gameCoordinator).connectPlayer(connection, connectionEvent);
 		verifyNoMoreInteractions(gameCoordinator);
 	}
 

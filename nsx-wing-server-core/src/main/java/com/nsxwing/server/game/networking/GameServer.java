@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.common.networking.config.KryoNetwork;
 import com.nsxwing.common.networking.io.event.GameEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -33,6 +34,13 @@ public class GameServer {
 
 		server.start();
 		isRunning = true;
+	}
+
+	@SneakyThrows
+	public void stop() {
+		server.stop();
+		server.dispose();
+		isRunning = false;
 	}
 
 	public void broadcastEvent(GameEvent event) {

@@ -6,6 +6,7 @@ import org.junit.Test;
 import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
 import static com.nsxwing.common.player.PlayerIdentifier.SCRUB;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 public class ClientConnectionTest extends ContextInitializer {
@@ -16,5 +17,11 @@ public class ClientConnectionTest extends ContextInitializer {
 		//we should see that clients have received their player identifier.
 		assertThat(champClient.getPlayerIdentifier(), is(CHAMP));
 		assertThat(scrubClient.getPlayerIdentifier(), is(SCRUB));
+	}
+
+	@Test
+	public void shouldSupplyPlayerListsOnConnection() {
+		assertFalse(coordinator.getChamp().getPlayerAgents().isEmpty());
+		assertFalse(coordinator.getScrub().getPlayerAgents().isEmpty());
 	}
 }

@@ -6,6 +6,7 @@ import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.integration.client.MockClient;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.Before;
 
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class ContextInitializer {
 		scrubClient = new MockClient();
 
 		gameServer = getGameServer();
+
 		coordinator = getGameCoordinator(gameServer, getPhaseEngine());
 		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");
@@ -52,5 +54,10 @@ public class ContextInitializer {
 
 		gameEngine = engineOptional.get();
 		log.info("Got a Game Engine. Running tests.");
+	}
+
+	@After
+	public void tearDown() {
+		gameServer.stop();
 	}
 }

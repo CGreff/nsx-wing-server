@@ -6,11 +6,15 @@ import com.esotericsoftware.kryonet.Listener;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.player.PlayerIdentifier;
+import com.nsxwing.common.player.agent.PlayerAgent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 import static com.nsxwing.common.networking.config.KryoNetwork.register;
+import static java.util.Arrays.asList;
 
 @Slf4j
 public class MockClient {
@@ -38,7 +42,9 @@ public class MockClient {
 	private class StubbedListener extends Listener {
 		public void connected(Connection connection) {
 			log.info("Client has connected to localhost - sending connectionEvent");
-			client.sendTCP(new ConnectionEvent());
+			ConnectionEvent connectionEvent = new ConnectionEvent();
+			connectionEvent.setPlayerAgents(asList(new PlayerAgent()));
+			client.sendTCP(connectionEvent);
 		}
 
 		public void received(Connection connection, Object object) {

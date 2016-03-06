@@ -1,6 +1,6 @@
 package com.nsxwing.server.game;
 
-import com.nsxwing.server.game.agent.Player;
+import com.nsxwing.common.player.Player;
 import com.nsxwing.server.game.networking.GameServer;
 
 public class GameEngine {

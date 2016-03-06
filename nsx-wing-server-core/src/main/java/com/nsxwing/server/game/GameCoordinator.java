@@ -1,12 +1,14 @@
 package com.nsxwing.server.game;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
+import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.PlayerIdentifier;
-import com.nsxwing.server.game.agent.Player;
 import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
+import lombok.Getter;
 
 import java.util.Optional;
 
@@ -18,7 +20,11 @@ public class GameCoordinator {
 	private final PhaseEngine phaseEngine;
 	private GameEngine gameEngine;
 	private GameServer server;
+
+	@Getter
 	private Player champ;
+
+	@Getter
 	private Player scrub;
 
 	public GameCoordinator(GameServer server, PhaseEngine phaseEngine) {
@@ -34,19 +40,19 @@ public class GameCoordinator {
 		return Optional.empty();
 	}
 
-	public void connectPlayer(Connection playerConnection) {
+	public void connectPlayer(Connection playerConnection, ConnectionEvent connectionEvent) {
 		if (champ == null) {
-			champ = handleConnection(playerConnection, CHAMP);
+			champ = handleConnection(playerConnection, connectionEvent, CHAMP);
 		} else {
-			scrub = handleConnection(playerConnection, SCRUB);
+			scrub = handleConnection(playerConnection, connectionEvent, SCRUB);
 		}
 	}
 
-	private Player handleConnection(Connection playerConnection, PlayerIdentifier identifier) {
+	private Player handleConnection(Connection playerConnection, ConnectionEvent connectionEvent, PlayerIdentifier identifier) {
 		ConnectionResponse response = new ConnectionResponse();
 		response.setPlayerIdentifier(identifier);
 		server.sendToClient(playerConnection, response);
-		return new Player(identifier, playerConnection);
+		return new Player(identifier, playerConnection, connectionEvent.getPlayerAgents());
 	}
 
 	public void handleResponse(GameResponse response) {

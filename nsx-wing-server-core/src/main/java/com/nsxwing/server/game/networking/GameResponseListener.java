@@ -19,7 +19,7 @@ public class GameResponseListener extends Listener {
 		if (object instanceof GameResponse) {
 			gameCoordinator.handleResponse((GameResponse) object);
 		} else if (object instanceof ConnectionEvent) {
-			gameCoordinator.connectPlayer(connection);
+			gameCoordinator.connectPlayer(connection, (ConnectionEvent) object);
 		}
 	}
 }

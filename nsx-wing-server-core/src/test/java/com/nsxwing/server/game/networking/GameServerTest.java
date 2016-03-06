@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
@@ -119,5 +120,17 @@ public class GameServerTest {
 		underTest.start(listener);
 
 		assertTrue(underTest.isRunning());
+	}
+
+	@Test
+	@SneakyThrows
+	public void shouldStopServer() {
+		underTest.start(listener);
+		assertTrue(underTest.isRunning());
+
+		underTest.stop();
+		assertFalse(underTest.isRunning());
+		verify(server).stop();
+		verify(server).dispose();
 	}
 }
