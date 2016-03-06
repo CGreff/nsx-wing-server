@@ -2,6 +2,8 @@ package com.nsxwing.server.game;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
+import com.nsxwing.common.networking.io.response.GameResponse;
+import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,9 @@ public class GameCoordinatorTest {
 
 	@Mock
 	private GameServer server;
+
+	@Mock
+	private PhaseEngine phaseEngine;
 
 	@Mock
 	private Connection connection;
@@ -65,5 +70,13 @@ public class GameCoordinatorTest {
 		underTest.connectPlayer(connection);
 
 		verify(server).sendToClient(eq(connection), any(ConnectionResponse.class));
+	}
+
+	@Test
+	public void shouldPassResponsesOffToPhaseEngine() {
+		GameResponse response = mock(GameResponse.class);
+		underTest.handleResponse(response);
+
+		verify(phaseEngine).handleResponse(response);
 	}
 }

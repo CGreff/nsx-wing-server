@@ -35,10 +35,9 @@ public class ContextInitializer {
 		champClient = new MockClient();
 		scrubClient = new MockClient();
 
-		//TODO: Create a game class that abstracts all of this away.
 		gameServer = getGameServer();
-		coordinator = getGameCoordinator(gameServer);
-		initGameServer(gameServer, getPhaseEngine(), coordinator);
+		coordinator = getGameCoordinator(gameServer, getPhaseEngine());
+		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");
 
 		champClient.connect();

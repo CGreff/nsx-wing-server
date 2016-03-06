@@ -2,9 +2,12 @@ package com.nsxwing.server.game;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
+import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.PlayerIdentifier;
 import com.nsxwing.server.game.agent.Player;
+import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
+
 import java.util.Optional;
 
 import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
@@ -12,17 +15,21 @@ import static com.nsxwing.common.player.PlayerIdentifier.SCRUB;
 
 public class GameCoordinator {
 
-	GameServer server;
-	Player champ;
-	Player scrub;
+	private final PhaseEngine phaseEngine;
+	private GameEngine gameEngine;
+	private GameServer server;
+	private Player champ;
+	private Player scrub;
 
-	public GameCoordinator(GameServer server) {
+	public GameCoordinator(GameServer server, PhaseEngine phaseEngine) {
 		this.server = server;
+		this.phaseEngine = phaseEngine;
 	}
 
 	public Optional<GameEngine> fetchGameEngine() {
 		if (champ != null && scrub != null) {
-			return Optional.of(new GameEngine(server, champ, scrub));
+			gameEngine = new GameEngine(server, champ, scrub);
+			return Optional.of(gameEngine);
 		}
 		return Optional.empty();
 	}
@@ -40,5 +47,9 @@ public class GameCoordinator {
 		response.setPlayerIdentifier(identifier);
 		server.sendToClient(playerConnection, response);
 		return new Player(identifier, playerConnection);
+	}
+
+	public void handleResponse(GameResponse response) {
+		phaseEngine.handleResponse(response);
 	}
 }

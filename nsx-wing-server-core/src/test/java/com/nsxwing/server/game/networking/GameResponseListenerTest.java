@@ -4,7 +4,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.server.game.GameCoordinator;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -21,9 +20,6 @@ public class GameResponseListenerTest {
 	private GameResponseListener underTest;
 
 	@Mock
-	private PhaseEngine phaseEngine;
-
-	@Mock
 	private GameCoordinator gameCoordinator;
 
 	@Mock
@@ -38,11 +34,11 @@ public class GameResponseListenerTest {
 	}
 
 	@Test
-	public void shouldHandOffReceivedResponseToPhaseEngine() {
+	public void shouldHandOffReceivedResponseToGameCoordinator() {
 		underTest.received(connection, response);
 
-		verify(phaseEngine).handleResponse(response);
-		verifyNoMoreInteractions(phaseEngine);
+		verify(gameCoordinator).handleResponse(response);
+		verifyNoMoreInteractions(gameCoordinator);
 	}
 
 	@Test
@@ -50,12 +46,13 @@ public class GameResponseListenerTest {
 		underTest.received(connection, new ConnectionEvent());
 
 		verify(gameCoordinator).connectPlayer(connection);
+		verifyNoMoreInteractions(gameCoordinator);
 	}
 
 	@Test
 	public void shouldDoNothingWhenReceivingBadObject() {
 		underTest.received(connection, new String());
 
-		verifyZeroInteractions(phaseEngine);
+		verifyZeroInteractions(gameCoordinator);
 	}
 }

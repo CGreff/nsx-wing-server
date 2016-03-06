@@ -29,13 +29,13 @@ public class AppContext {
 		return new GameServer(new Server());
 	}
 
-	public static GameCoordinator getGameCoordinator(GameServer server) {
-		return new GameCoordinator(server);
+	public static GameCoordinator getGameCoordinator(GameServer server, PhaseEngine phaseEngine) {
+		return new GameCoordinator(server, phaseEngine);
 	}
 
 	@SneakyThrows
-	public static void initGameServer(GameServer server, PhaseEngine phaseEngine, GameCoordinator coordinator) {
-		server.start(new GameResponseListener(phaseEngine, coordinator));
+	public static void initGameServer(GameServer server, GameCoordinator coordinator) {
+		server.start(new GameResponseListener(coordinator));
 	}
 
 

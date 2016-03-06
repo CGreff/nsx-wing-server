@@ -44,7 +44,7 @@ public class AppContextTest {
 
 	@Test
 	public void shouldProvideAGameCoordinator() {
-		GameCoordinator result = AppContext.getGameCoordinator(mock(GameServer.class));
+		GameCoordinator result = AppContext.getGameCoordinator(mock(GameServer.class), mock(PhaseEngine.class));
 
 		assertThat(result, instanceOf(GameCoordinator.class));
 	}
@@ -52,7 +52,7 @@ public class AppContextTest {
 	@Test
 	public void shouldStartAGameServer() {
 		GameServer server = AppContext.getGameServer();
-		AppContext.initGameServer(server, mock(PhaseEngine.class), mock(GameCoordinator.class));
+		AppContext.initGameServer(server, mock(GameCoordinator.class));
 
 		assertTrue(server.isRunning());
 	}
