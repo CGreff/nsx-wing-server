@@ -12,6 +12,7 @@ import org.junit.Before;
 import java.util.Optional;
 
 import static com.nsxwing.server.config.AppContext.getGameCoordinator;
+import static com.nsxwing.server.config.AppContext.getGameEngine;
 import static com.nsxwing.server.config.AppContext.getGameServer;
 import static com.nsxwing.server.config.AppContext.getPhaseEngine;
 import static com.nsxwing.server.config.AppContext.initGameServer;
@@ -37,22 +38,20 @@ public class ContextInitializer {
 		scrubClient = new MockClient();
 
 		gameServer = getGameServer();
+		gameEngine = getGameEngine(gameServer, getPhaseEngine());
 
-		coordinator = getGameCoordinator(gameServer, getPhaseEngine());
+		coordinator = getGameCoordinator(gameServer, gameEngine);
 		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");
 
 		champClient.connect();
 		scrubClient.connect();
 
-		Optional<GameEngine> engineOptional = coordinator.fetchGameEngine();
-		while (!engineOptional.isPresent()) {
+		while (!coordinator.isGameReady()) {
 			log.info("Checking for client connections.");
 			Thread.sleep(100);
-			engineOptional = coordinator.fetchGameEngine();
 		}
 
-		gameEngine = engineOptional.get();
 		log.info("Got a Game Engine. Running tests.");
 	}
 

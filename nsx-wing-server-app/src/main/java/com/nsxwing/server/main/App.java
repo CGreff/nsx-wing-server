@@ -6,9 +6,8 @@ import com.nsxwing.server.game.networking.GameServer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
-
 import static com.nsxwing.server.config.AppContext.getGameCoordinator;
+import static com.nsxwing.server.config.AppContext.getGameEngine;
 import static com.nsxwing.server.config.AppContext.getGameServer;
 import static com.nsxwing.server.config.AppContext.getPhaseEngine;
 import static com.nsxwing.server.config.AppContext.initGameServer;
@@ -19,17 +18,16 @@ public class App {
 	@SneakyThrows
 	public static void main(String[] args) {
 		GameServer gameServer = getGameServer();
-		GameCoordinator coordinator = getGameCoordinator(gameServer, getPhaseEngine());
+		GameEngine gameEngine = getGameEngine(gameServer, getPhaseEngine());
+		GameCoordinator coordinator = getGameCoordinator(gameServer, gameEngine);
 		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");
 
-		Optional<GameEngine> engineOptional = coordinator.fetchGameEngine();
-		while (!engineOptional.isPresent()) {
+		while (!coordinator.isGameReady()) {
 			Thread.sleep(500);
-			engineOptional = coordinator.fetchGameEngine();
 		}
 
 		log.info("--- Starting game ---");
-		GameEngine gameEngine = engineOptional.get();
+//		gameEngine.play();
 	}
 }

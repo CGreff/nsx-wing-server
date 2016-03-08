@@ -1,6 +1,7 @@
 package com.nsxwing.server.config;
 
 import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.GameEngine;
 import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.rules.phase.ActivationPhase;
@@ -43,8 +44,15 @@ public class AppContextTest {
 	}
 
 	@Test
+	public void shouldProvideAGameEngine() {
+		GameEngine result = AppContext.getGameEngine(mock(GameServer.class), mock(PhaseEngine.class));
+
+		assertThat(result, instanceOf(GameEngine.class));
+	}
+
+	@Test
 	public void shouldProvideAGameCoordinator() {
-		GameCoordinator result = AppContext.getGameCoordinator(mock(GameServer.class), mock(PhaseEngine.class));
+		GameCoordinator result = AppContext.getGameCoordinator(mock(GameServer.class), mock(GameEngine.class));
 
 		assertThat(result, instanceOf(GameCoordinator.class));
 	}

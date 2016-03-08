@@ -6,20 +6,16 @@ import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.PlayerIdentifier;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import lombok.Getter;
-
-import java.util.Optional;
 
 import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
 import static com.nsxwing.common.player.PlayerIdentifier.SCRUB;
 
 public class GameCoordinator {
 
-	private final PhaseEngine phaseEngine;
-	private GameEngine gameEngine;
-	private GameServer server;
+	private final GameEngine gameEngine;
+	private final GameServer server;
 
 	@Getter
 	private Player champ;
@@ -27,24 +23,22 @@ public class GameCoordinator {
 	@Getter
 	private Player scrub;
 
-	public GameCoordinator(GameServer server, PhaseEngine phaseEngine) {
+	public GameCoordinator(GameServer server, GameEngine gameEngine) {
 		this.server = server;
-		this.phaseEngine = phaseEngine;
+		this.gameEngine = gameEngine;
 	}
 
-	public Optional<GameEngine> fetchGameEngine() {
-		if (champ != null && scrub != null) {
-			gameEngine = new GameEngine(server, champ, scrub);
-			return Optional.of(gameEngine);
-		}
-		return Optional.empty();
+	public boolean isGameReady() {
+		return (champ != null && scrub != null);
 	}
 
 	public void connectPlayer(Connection playerConnection, ConnectionEvent connectionEvent) {
 		if (champ == null) {
 			champ = handleConnection(playerConnection, connectionEvent, CHAMP);
+			gameEngine.setChamp(champ);
 		} else {
 			scrub = handleConnection(playerConnection, connectionEvent, SCRUB);
+			gameEngine.setScrub(scrub);
 		}
 	}
 
@@ -56,6 +50,6 @@ public class GameCoordinator {
 	}
 
 	public void handleResponse(GameResponse response) {
-		phaseEngine.handleResponse(response);
+		gameEngine.handleResponse(response);
 	}
 }

@@ -10,8 +10,6 @@ import com.nsxwing.common.player.agent.PlayerAgent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 import static com.nsxwing.common.networking.config.KryoNetwork.register;
 import static java.util.Arrays.asList;

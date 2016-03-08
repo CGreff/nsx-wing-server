@@ -2,6 +2,7 @@ package com.nsxwing.server.config;
 
 import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.GameEngine;
 import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameResponseListener;
 import com.nsxwing.server.game.networking.GameServer;
@@ -29,8 +30,12 @@ public class AppContext {
 		return new GameServer(new Server());
 	}
 
-	public static GameCoordinator getGameCoordinator(GameServer server, PhaseEngine phaseEngine) {
-		return new GameCoordinator(server, phaseEngine);
+	public static GameEngine getGameEngine(GameServer gameServer, PhaseEngine phaseEngine) {
+		return  new GameEngine(gameServer, phaseEngine);
+	}
+
+	public static GameCoordinator getGameCoordinator(GameServer server, GameEngine gameEngine) {
+		return new GameCoordinator(server, gameEngine);
 	}
 
 	@SneakyThrows

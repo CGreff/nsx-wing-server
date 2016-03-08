@@ -4,21 +4,20 @@ import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
+import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.agent.PlayerAgent;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -36,7 +35,7 @@ public class GameCoordinatorTest {
 	private GameServer server;
 
 	@Mock
-	private PhaseEngine phaseEngine;
+	private GameEngine gameEngine;
 
 	@Mock
 	private Connection connection;
@@ -54,27 +53,26 @@ public class GameCoordinatorTest {
 	}
 
 	@Test
-	public void shouldNotReturnAGameEngineIfNoPlayersHaveConnected() {
-		Optional<GameEngine> result = underTest.fetchGameEngine();
-		assertThat(result, is(Optional.empty()));
+	public void shouldNotBeReadyIfNoPlayersHaveConnected() {
+		boolean result = underTest.isGameReady();
+		assertFalse(result);
 	}
 
 	@Test
-	public void shouldNotReturnAGameEngineIfOnlyOnePlayerConnected() {
+	public void shouldNotBeReadyIfOnlyOnePlayerConnected() {
 		underTest.connectPlayer(connection, connectionEvent);
-		Optional<GameEngine> result = underTest.fetchGameEngine();
+		boolean result = underTest.isGameReady();
 
-		assertThat(result, is(Optional.empty()));
+		assertFalse(result);
 	}
 
 	@Test
-	public void shouldReturnAGameEngineWhenBothPlayersConnected() {
+	public void shouldBeReadyWhenBothPlayersConnected() {
 		underTest.connectPlayer(connection, connectionEvent);
 		underTest.connectPlayer(connection, connectionEvent);
-		Optional<GameEngine> result = underTest.fetchGameEngine();
+		boolean result = underTest.isGameReady();
 
-		assertTrue(result.isPresent());
-		assertThat(result.get(), instanceOf(GameEngine.class));
+		assertTrue(result);
 	}
 
 	@Test
@@ -85,11 +83,21 @@ public class GameCoordinatorTest {
 	}
 
 	@Test
+	public void shouldAssignPlayerToGameEngineOnConnection() {
+		//Test both players connect
+		underTest.connectPlayer(connection, connectionEvent);
+		underTest.connectPlayer(connection, connectionEvent);
+
+		verify(gameEngine).setChamp(any(Player.class));
+		verify(gameEngine).setScrub(any(Player.class));
+	}
+
+	@Test
 	public void shouldPassResponsesOffToPhaseEngine() {
 		GameResponse response = mock(GameResponse.class);
 		underTest.handleResponse(response);
 
-		verify(phaseEngine).handleResponse(response);
+		verify(gameEngine).handleResponse(response);
 	}
 
 	@Test
