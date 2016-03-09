@@ -9,12 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.Optional;
-
 import static com.nsxwing.server.config.AppContext.getGameCoordinator;
 import static com.nsxwing.server.config.AppContext.getGameEngine;
 import static com.nsxwing.server.config.AppContext.getGameServer;
-import static com.nsxwing.server.config.AppContext.getPhaseEngine;
 import static com.nsxwing.server.config.AppContext.initGameServer;
 
 /*
@@ -38,7 +35,7 @@ public class ContextInitializer {
 		scrubClient = new MockClient();
 
 		gameServer = getGameServer();
-		gameEngine = getGameEngine(gameServer, getPhaseEngine());
+		gameEngine = getGameEngine(gameServer);
 
 		coordinator = getGameCoordinator(gameServer, gameEngine);
 		initGameServer(gameServer, coordinator);

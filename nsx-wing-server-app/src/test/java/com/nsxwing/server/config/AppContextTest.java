@@ -2,7 +2,6 @@ package com.nsxwing.server.config;
 
 import com.nsxwing.server.game.GameCoordinator;
 import com.nsxwing.server.game.GameEngine;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.rules.phase.ActivationPhase;
 import com.nsxwing.server.game.rules.phase.CombatPhase;
@@ -30,13 +29,6 @@ public class AppContextTest {
 	}
 
 	@Test
-	public void shouldProvideAPhaseEngine() {
-		PhaseEngine result = AppContext.getPhaseEngine();
-
-		assertThat(result, instanceOf(PhaseEngine.class));
-	}
-
-	@Test
 	public void shouldProvideAGameServer() {
 		GameServer result = AppContext.getGameServer();
 
@@ -45,7 +37,7 @@ public class AppContextTest {
 
 	@Test
 	public void shouldProvideAGameEngine() {
-		GameEngine result = AppContext.getGameEngine(mock(GameServer.class), mock(PhaseEngine.class));
+		GameEngine result = AppContext.getGameEngine(mock(GameServer.class));
 
 		assertThat(result, instanceOf(GameEngine.class));
 	}

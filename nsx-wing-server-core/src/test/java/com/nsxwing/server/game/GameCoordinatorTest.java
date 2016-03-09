@@ -7,7 +7,6 @@ import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.agent.PlayerAgent;
 import com.nsxwing.server.game.networking.GameServer;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

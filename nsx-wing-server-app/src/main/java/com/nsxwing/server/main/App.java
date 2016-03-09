@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import static com.nsxwing.server.config.AppContext.getGameCoordinator;
 import static com.nsxwing.server.config.AppContext.getGameEngine;
 import static com.nsxwing.server.config.AppContext.getGameServer;
-import static com.nsxwing.server.config.AppContext.getPhaseEngine;
 import static com.nsxwing.server.config.AppContext.initGameServer;
 
 @Slf4j
@@ -18,7 +17,7 @@ public class App {
 	@SneakyThrows
 	public static void main(String[] args) {
 		GameServer gameServer = getGameServer();
-		GameEngine gameEngine = getGameEngine(gameServer, getPhaseEngine());
+		GameEngine gameEngine = getGameEngine(gameServer);
 		GameCoordinator coordinator = getGameCoordinator(gameServer, gameEngine);
 		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");

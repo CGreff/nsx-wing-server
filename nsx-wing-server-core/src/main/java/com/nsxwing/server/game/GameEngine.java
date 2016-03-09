@@ -2,24 +2,27 @@ package com.nsxwing.server.game;
 
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameServer;
+import lombok.Getter;
 import lombok.Setter;
 
 public class GameEngine {
 
 	private final GameServer gameServer;
-	private final PhaseEngine phaseEngine;
 
 	@Setter private Player champ;
 	@Setter private Player scrub;
+	@Getter private int currentTurnNumber;
 
-	public GameEngine(GameServer gameServer, PhaseEngine phaseEngine) {
+	public GameEngine(GameServer gameServer) {
 		this.gameServer = gameServer;
-		this.phaseEngine = phaseEngine;
+		this.currentTurnNumber = 0;
 	}
 
 	public void handleResponse(GameResponse response) {
-		phaseEngine.handleResponse(response);
+	}
+
+	public void playTurn() {
+		currentTurnNumber++;
 	}
 }

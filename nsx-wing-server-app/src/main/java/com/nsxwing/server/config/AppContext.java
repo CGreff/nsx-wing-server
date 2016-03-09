@@ -3,7 +3,6 @@ package com.nsxwing.server.config;
 import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.server.game.GameCoordinator;
 import com.nsxwing.server.game.GameEngine;
-import com.nsxwing.server.game.engine.PhaseEngine;
 import com.nsxwing.server.game.networking.GameResponseListener;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.rules.phase.ActivationPhase;
@@ -22,16 +21,12 @@ public class AppContext {
 		return asList(new PlanningPhase(), new ActivationPhase(), new CombatPhase());
 	}
 
-	public static PhaseEngine getPhaseEngine() {
-		return new PhaseEngine(getPhases());
-	}
-
 	public static GameServer getGameServer() {
 		return new GameServer(new Server());
 	}
 
-	public static GameEngine getGameEngine(GameServer gameServer, PhaseEngine phaseEngine) {
-		return  new GameEngine(gameServer, phaseEngine);
+	public static GameEngine getGameEngine(GameServer gameServer) {
+		return  new GameEngine(gameServer);
 	}
 
 	public static GameCoordinator getGameCoordinator(GameServer server, GameEngine gameEngine) {
