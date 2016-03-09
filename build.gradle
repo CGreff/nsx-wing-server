@@ -11,6 +11,7 @@ allprojects {
 
 subprojects {
 	apply plugin: 'java'
+	apply plugin: 'pmd'
 
 	tasks.withType(JavaCompile) {
 		sourceCompatibility = '1.8'

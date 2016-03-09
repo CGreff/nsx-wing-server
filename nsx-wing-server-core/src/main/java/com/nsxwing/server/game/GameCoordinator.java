@@ -29,7 +29,7 @@ public class GameCoordinator {
 	}
 
 	public boolean isGameReady() {
-		return (champ != null && scrub != null);
+		return champ != null && scrub != null;
 	}
 
 	public void connectPlayer(Connection playerConnection, ConnectionEvent connectionEvent) {
