@@ -3,13 +3,7 @@ package com.nsxwing.server.config;
 import com.nsxwing.server.game.GameCoordinator;
 import com.nsxwing.server.game.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
-import com.nsxwing.server.game.rules.phase.ActivationPhase;
-import com.nsxwing.server.game.rules.phase.CombatPhase;
-import com.nsxwing.server.game.rules.phase.Phase;
-import com.nsxwing.server.game.rules.phase.PlanningPhase;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -17,16 +11,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class AppContextTest {
-
-	@Test
-	public void shouldProvideAPhaseList() {
-		List<Phase> result = AppContext.getPhases();
-
-		assertThat(result, instanceOf(List.class));
-		assertThat(result.get(0), instanceOf(PlanningPhase.class));
-		assertThat(result.get(1), instanceOf(ActivationPhase.class));
-		assertThat(result.get(2), instanceOf(CombatPhase.class));
-	}
 
 	@Test
 	public void shouldProvideAGameServer() {

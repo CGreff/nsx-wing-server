@@ -12,13 +12,15 @@ import static com.nsxwing.server.config.AppContext.getGameServer;
 import static com.nsxwing.server.config.AppContext.initGameServer;
 
 @Slf4j
-public class App {
+public final class Application {
+
+	private Application() {}
 
 	@SneakyThrows
-	public static void main(String[] args) {
-		GameServer gameServer = getGameServer();
-		GameEngine gameEngine = getGameEngine(gameServer);
-		GameCoordinator coordinator = getGameCoordinator(gameServer, gameEngine);
+	public static void main(final String[] args) {
+		final GameServer gameServer = getGameServer();
+		final GameEngine gameEngine = getGameEngine(gameServer);
+		final GameCoordinator coordinator = getGameCoordinator(gameServer, gameEngine);
 		initGameServer(gameServer, coordinator);
 		log.info("Game Server started. Waiting on Clients.");
 
