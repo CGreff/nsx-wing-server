@@ -23,6 +23,6 @@ public class ActivationPhase extends Phase {
 
 	@Override
 	public GameState playPhase(GameState gameState) {
-		return null;
+		return gameState;
 	}
 }

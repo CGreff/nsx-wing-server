@@ -23,6 +23,6 @@ public class PlanningPhase extends Phase {
 
 	@Override
 	public GameState playPhase(GameState gameState) {
-		return null;
+		return gameState;
 	}
 }

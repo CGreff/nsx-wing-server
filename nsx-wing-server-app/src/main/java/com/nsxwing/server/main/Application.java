@@ -29,6 +29,6 @@ public final class Application {
 		}
 
 		log.info("--- Starting game ---");
-//		gameEngine.play();
+		coordinator.playGame();
 	}
 }

@@ -3,6 +3,7 @@ package com.nsxwing.server.game.engine;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.state.GameState;
+import com.nsxwing.common.state.GameStateFactory;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.rules.phase.Phase;
 import com.nsxwing.server.game.rules.phase.PhaseList;
@@ -11,14 +12,16 @@ import lombok.Setter;
 public class GameEngine {
 
 	private final GameServer gameServer;
-	private PhaseList phaseList;
+	private final PhaseList phaseList;
+	private final GameStateFactory gameStateFactory;
 
 	@Setter private Player champ;
 	@Setter private Player scrub;
 
-	public GameEngine(GameServer gameServer, PhaseList phaseList) {
+	public GameEngine(GameServer gameServer, PhaseList phaseList, GameStateFactory gameStateFactory) {
 		this.gameServer = gameServer;
 		this.phaseList = phaseList;
+		this.gameStateFactory = gameStateFactory;
 	}
 
 	public synchronized void handleResponse(GameResponse response) {
@@ -26,9 +29,6 @@ public class GameEngine {
 	}
 
 	public GameState playTurn(GameState gameState) {
-		GameState.GameStateBuilder gameStateBuilder = GameState.builder();
-		gameStateBuilder.turnNumber(gameState.getTurnNumber() + 1);
-
 		GameState latestGameState = gameState;
 
 		for (Phase phase : phaseList.getPhases()) {
@@ -36,6 +36,6 @@ public class GameEngine {
 			phaseList.incrementPhase();
 		}
 
-		return gameStateBuilder.build();
+		return gameStateFactory.incrementTurn(gameState);
 	}
 }

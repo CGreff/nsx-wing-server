@@ -3,6 +3,7 @@ package com.nsxwing.server.game.engine;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.state.GameState;
+import com.nsxwing.common.state.GameStateFactory;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.rules.phase.ActivationPhase;
 import com.nsxwing.server.game.rules.phase.CombatPhase;
@@ -14,7 +15,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import java.util.List;
 
@@ -36,6 +36,9 @@ public class GameEngineTest {
 
 	@Mock
 	private PhaseList phaseList;
+
+	@Mock
+	private GameStateFactory gameStateFactory;
 
 	@Mock
 	private Player champ;
@@ -92,12 +95,13 @@ public class GameEngineTest {
 	}
 
 	@Test
-	public void shouldIncrementCurrentTurnNumberWhenATurnIsPlayed() {
-		doReturn(0).when(gameState).getTurnNumber();
+	public void shouldPassGameStateToTheGameStateFactoryAtEndOfTurn() {
+		GameState newGameState = mock(GameState.class);
+		doReturn(newGameState).when(gameStateFactory).incrementTurn(gameState);
 
 		GameState result = underTest.playTurn(gameState);
 
-		assertThat(result.getTurnNumber(), is(1));
+		assertThat(result, is(newGameState));
 	}
 
 	@Test

@@ -12,6 +12,7 @@ import com.nsxwing.common.state.GameStateFactory;
 import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
 import static com.nsxwing.common.player.PlayerIdentifier.SCRUB;
 
+@Slf4j
 public class GameCoordinator {
 
 	private final GameEngine gameEngine;
@@ -67,6 +69,7 @@ public class GameCoordinator {
 
 		while (!gameState.isGameComplete()) {
 			gameState = gameEngine.playTurn(gameState);
+			log.info("Playing turn: " + gameState.getTurnNumber());
 		}
 	}
 }
