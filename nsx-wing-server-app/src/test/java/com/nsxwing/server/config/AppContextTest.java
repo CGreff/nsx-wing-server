@@ -1,7 +1,7 @@
 package com.nsxwing.server.config;
 
 import com.nsxwing.server.game.GameCoordinator;
-import com.nsxwing.server.game.GameEngine;
+import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import org.junit.Test;
 

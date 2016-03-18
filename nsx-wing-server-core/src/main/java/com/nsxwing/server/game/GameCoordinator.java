@@ -6,8 +6,15 @@ import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.PlayerIdentifier;
+import com.nsxwing.common.player.agent.PlayerAgent;
+import com.nsxwing.common.state.GameState;
+import com.nsxwing.common.state.GameStateFactory;
+import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
 import static com.nsxwing.common.player.PlayerIdentifier.SCRUB;
@@ -16,6 +23,7 @@ public class GameCoordinator {
 
 	private final GameEngine gameEngine;
 	private final GameServer server;
+	private final GameStateFactory gameStateFactory;
 
 	@Getter
 	private Player champ;
@@ -23,9 +31,10 @@ public class GameCoordinator {
 	@Getter
 	private Player scrub;
 
-	public GameCoordinator(GameServer server, GameEngine gameEngine) {
+	public GameCoordinator(GameServer server, GameEngine gameEngine, GameStateFactory gameStateFactory) {
 		this.server = server;
 		this.gameEngine = gameEngine;
+		this.gameStateFactory = gameStateFactory;
 	}
 
 	public boolean isGameReady() {
@@ -51,5 +60,13 @@ public class GameCoordinator {
 
 	public void handleResponse(GameResponse response) {
 		gameEngine.handleResponse(response);
+	}
+
+	public void playGame() {
+		GameState gameState = gameStateFactory.buildInitialGameState(champ, scrub);
+
+		while (!gameState.isGameComplete()) {
+			gameState = gameEngine.playTurn(gameState);
+		}
 	}
 }

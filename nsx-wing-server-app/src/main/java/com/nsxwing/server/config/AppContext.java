@@ -1,10 +1,12 @@
 package com.nsxwing.server.config;
 
 import com.esotericsoftware.kryonet.Server;
+import com.nsxwing.common.state.GameStateFactory;
 import com.nsxwing.server.game.GameCoordinator;
-import com.nsxwing.server.game.GameEngine;
+import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameResponseListener;
 import com.nsxwing.server.game.networking.GameServer;
+import com.nsxwing.server.game.rules.phase.PhaseList;
 import lombok.SneakyThrows;
 
 public final class AppContext {
@@ -16,11 +18,11 @@ public final class AppContext {
 	}
 
 	public static GameEngine getGameEngine(final GameServer gameServer) {
-		return  new GameEngine(gameServer);
+		return  new GameEngine(gameServer, new PhaseList());
 	}
 
 	public static GameCoordinator getGameCoordinator(final GameServer server, final GameEngine gameEngine) {
-		return new GameCoordinator(server, gameEngine);
+		return new GameCoordinator(server, gameEngine, new GameStateFactory());
 	}
 
 	@SneakyThrows

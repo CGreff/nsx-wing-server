@@ -1,6 +1,7 @@
 package com.nsxwing.server.game.rules.phase;
 
 import com.nsxwing.common.networking.io.response.GameResponse;
+import com.nsxwing.common.state.GameState;
 
 public abstract class Phase {
 
@@ -11,5 +12,7 @@ public abstract class Phase {
 		return handledChamp && handledScrub;
 	}
 
-	public abstract void applyResponse(GameResponse response);
+	public abstract GameState applyResponse(GameResponse response);
+
+	public abstract GameState playPhase(GameState gameState);
 }

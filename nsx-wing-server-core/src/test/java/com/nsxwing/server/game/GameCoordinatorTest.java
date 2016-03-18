@@ -6,6 +6,9 @@ import com.nsxwing.common.networking.io.response.ConnectionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.agent.PlayerAgent;
+import com.nsxwing.common.state.GameState;
+import com.nsxwing.common.state.GameStateFactory;
+import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +25,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class GameCoordinatorTest {
 
@@ -36,6 +41,9 @@ public class GameCoordinatorTest {
 	private GameEngine gameEngine;
 
 	@Mock
+	private GameStateFactory gameStateFactory;
+
+	@Mock
 	private Connection connection;
 
 	@Mock
@@ -44,10 +52,14 @@ public class GameCoordinatorTest {
 	@Mock
 	private PlayerAgent playerAgent;
 
+	@Mock
+	private GameState gameState;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		doReturn(singletonList(playerAgent)).when(connectionEvent).getPlayerAgents();
+		doReturn(gameState).when(gameStateFactory).buildInitialGameState(any(Player.class), any(Player.class));
 	}
 
 	@Test
@@ -103,5 +115,15 @@ public class GameCoordinatorTest {
 		underTest.connectPlayer(connection, connectionEvent);
 
 		assertThat(underTest.getChamp().getPlayerAgents(), hasItem(playerAgent));
+	}
+
+	@Test
+	public void shouldPlayAGameUntilCompletion() {
+		when(gameEngine.playTurn(any(GameState.class))).thenReturn(gameState);
+		when(gameState.isGameComplete()).thenReturn(false, false, true);
+
+		underTest.playGame();
+
+		verify(gameEngine, times(2)).playTurn(any(GameState.class));
 	}
 }
