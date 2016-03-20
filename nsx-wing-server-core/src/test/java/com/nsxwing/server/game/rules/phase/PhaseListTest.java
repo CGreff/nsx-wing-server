@@ -1,7 +1,10 @@
 package com.nsxwing.server.game.rules.phase;
 
+import com.nsxwing.server.game.networking.GameServer;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
@@ -14,9 +17,13 @@ public class PhaseListTest {
 
 	private PhaseList underTest;
 
+	@Mock
+	private GameServer gameServer;
+
 	@Before
 	public void setUp() {
-		underTest = new PhaseList();
+		MockitoAnnotations.initMocks(this);
+		underTest = new PhaseList(gameServer);
 	}
 
 	@Test

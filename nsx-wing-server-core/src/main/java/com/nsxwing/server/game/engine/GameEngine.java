@@ -32,7 +32,7 @@ public class GameEngine {
 		GameState latestGameState = gameState;
 
 		for (Phase phase : phaseList.getPhases()) {
-			latestGameState = phase.playPhase(latestGameState);
+			latestGameState = phase.startPhase(latestGameState);
 			phaseList.incrementPhase();
 		}
 

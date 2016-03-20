@@ -79,9 +79,9 @@ public class GameEngineTest {
 
 	private void mockPhases() {
 		doReturn(phases).when(phaseList).getPhases();
-		doReturn(planningGameState).when(planningPhase).playPhase(gameState);
-		doReturn(activationGameState).when(activationPhase).playPhase(planningGameState);
-		doReturn(gameState).when(combatPhase).playPhase(activationGameState);
+		doReturn(planningGameState).when(planningPhase).startPhase(gameState);
+		doReturn(activationGameState).when(activationPhase).startPhase(planningGameState);
+		doReturn(gameState).when(combatPhase).startPhase(activationGameState);
 	}
 
 	@Test
@@ -108,9 +108,9 @@ public class GameEngineTest {
 	public void shouldTriggerEachPhase() {
 		underTest.playTurn(gameState);
 
-		verify(planningPhase).playPhase(gameState);
-		verify(activationPhase).playPhase(planningGameState);
-		verify(combatPhase).playPhase(activationGameState);
+		verify(planningPhase).startPhase(gameState);
+		verify(activationPhase).startPhase(planningGameState);
+		verify(combatPhase).startPhase(activationGameState);
 		verify(phaseList, times(3)).incrementPhase();
 	}
 }

@@ -18,7 +18,7 @@ public final class AppContext {
 	}
 
 	public static GameEngine getGameEngine(final GameServer gameServer) {
-		return  new GameEngine(gameServer, new PhaseList(), new GameStateFactory());
+		return  new GameEngine(gameServer, new PhaseList(gameServer), new GameStateFactory());
 	}
 
 	public static GameCoordinator getGameCoordinator(final GameServer server, final GameEngine gameEngine) {
