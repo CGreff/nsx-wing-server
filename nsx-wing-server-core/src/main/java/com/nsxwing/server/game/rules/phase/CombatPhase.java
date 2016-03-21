@@ -14,7 +14,7 @@ public class CombatPhase extends Phase {
 	}
 
 	@Override
-	public void handleResponse(GameResponse response) {
+	public GameState handleResponse(GameResponse response) {
 		if (response instanceof AttackResponse) {
 			log.info(response.getPlayerIdentifier() + " Attacking");
 		} else {

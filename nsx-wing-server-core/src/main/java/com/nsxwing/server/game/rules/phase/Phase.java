@@ -4,7 +4,10 @@ import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.PlayerIdentifier;
 import com.nsxwing.common.state.GameState;
 import com.nsxwing.server.game.networking.GameServer;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.function.Consumer;
 
 @Slf4j
 public abstract class Phase {
@@ -12,6 +15,7 @@ public abstract class Phase {
 	protected boolean handledChamp;
 	protected boolean handledScrub;
 	protected GameServer gameServer;
+	protected Consumer<Long> threadSleeper = this::sleep;
 
 	public Phase(GameServer gameServer) {
 		this.gameServer = gameServer;
@@ -33,7 +37,7 @@ public abstract class Phase {
 		handleResponse(response);
 	}
 
-	protected abstract void handleResponse(GameResponse response);
+	protected abstract GameState handleResponse(GameResponse response);
 
 	public GameState startPhase(GameState gameState) {
 		handledChamp = false;
@@ -42,4 +46,9 @@ public abstract class Phase {
 	}
 
 	public abstract GameState playPhase(GameState gameState);
+
+	@SneakyThrows
+	private void sleep(long millis) {
+		Thread.sleep(millis);
+	}
 }

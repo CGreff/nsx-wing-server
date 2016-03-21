@@ -21,7 +21,7 @@ public class ClientConnectionTest extends ContextInitializer {
 
 	@Test
 	public void shouldSupplyPlayerListsOnConnection() {
-		assertFalse(coordinator.getChamp().getPlayerAgents().isEmpty());
-		assertFalse(coordinator.getScrub().getPlayerAgents().isEmpty());
+		assertFalse(gameCoordinator.getChamp().getPlayerAgents().isEmpty());
+		assertFalse(gameCoordinator.getScrub().getPlayerAgents().isEmpty());
 	}
 }

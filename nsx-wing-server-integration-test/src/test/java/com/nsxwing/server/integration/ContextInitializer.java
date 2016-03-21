@@ -24,7 +24,7 @@ public class ContextInitializer {
 
 	protected GameEngine gameEngine;
 	protected GameServer gameServer;
-	protected GameCoordinator coordinator;
+	protected GameCoordinator gameCoordinator;
 	protected MockClient champClient;
 	protected MockClient scrubClient;
 
@@ -37,14 +37,14 @@ public class ContextInitializer {
 		gameServer = getGameServer();
 		gameEngine = getGameEngine(gameServer);
 
-		coordinator = getGameCoordinator(gameServer, gameEngine);
-		initGameServer(gameServer, coordinator);
+		gameCoordinator = getGameCoordinator(gameServer, gameEngine);
+		initGameServer(gameServer, gameCoordinator);
 		log.info("Game Server started. Waiting on Clients.");
 
 		champClient.connect();
 		scrubClient.connect();
 
-		while (!coordinator.isGameReady()) {
+		while (!gameCoordinator.isGameReady()) {
 			log.info("Checking for client connections.");
 			Thread.sleep(100);
 		}

@@ -14,7 +14,7 @@ public class ActivationPhase extends Phase {
 	}
 
 	@Override
-	public void handleResponse(GameResponse response) {
+	public GameState handleResponse(GameResponse response) {
 		if (response instanceof ActionResponse) {
 			log.info(response.getPlayerIdentifier() + " Activating");
 		} else {
