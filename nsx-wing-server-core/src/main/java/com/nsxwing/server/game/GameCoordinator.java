@@ -52,8 +52,11 @@ public class GameCoordinator {
 	private Player handleConnection(Connection playerConnection, ConnectionEvent connectionEvent, PlayerIdentifier identifier) {
 		ConnectionResponse response = new ConnectionResponse();
 		response.setPlayerIdentifier(identifier);
-		server.sendToClient(playerConnection, response);
-		return new Player(identifier, playerConnection, connectionEvent.getPlayerAgents());
+		int connectionId = playerConnection.getID();
+
+		server.sendToClient(connectionId, response);
+
+		return new Player(identifier, connectionId, connectionEvent.getPlayerAgents());
 	}
 
 	public void handleResponse(GameResponse response) {

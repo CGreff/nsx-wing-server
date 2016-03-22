@@ -55,9 +55,12 @@ public class GameCoordinatorTest {
 	@Mock
 	private GameState gameState;
 
+	private int connectionId = 1;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
+		doReturn(connectionId).when(connection).getID();
 		doReturn(singletonList(playerAgent)).when(connectionEvent).getPlayerAgents();
 		doReturn(gameState).when(gameStateFactory).buildInitialGameState(any(Player.class), any(Player.class));
 	}
@@ -89,7 +92,7 @@ public class GameCoordinatorTest {
 	public void shouldSendAResponseToAClientWhenConnected() {
 		underTest.connectPlayer(connection, connectionEvent);
 
-		verify(server).sendToClient(eq(connection), any(ConnectionResponse.class));
+		verify(server).sendToClient(eq(connectionId), any(ConnectionResponse.class));
 	}
 
 	@Test

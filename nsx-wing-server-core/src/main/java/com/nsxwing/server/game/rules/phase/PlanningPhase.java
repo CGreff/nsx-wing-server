@@ -12,12 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.lang.Thread.sleep;
-
 @Slf4j
 public class PlanningPhase extends Phase {
-
-	private GameState currentGameState;
 
 	public PlanningPhase(GameServer gameServer) {
 		super(gameServer);
@@ -32,6 +28,8 @@ public class PlanningPhase extends Phase {
 		combinedManeuverMap.putAll(planningResponse.getAgentManeuvers());
 
 		currentGameState = new GameState(
+				currentGameState.getChamp(),
+				currentGameState.getScrub(),
 				currentGameState.getPlayerAgents(),
 				combinedManeuverMap,
 				currentGameState.getTurnNumber());
@@ -51,7 +49,7 @@ public class PlanningPhase extends Phase {
 		gameServer.broadcastEvent(event);
 
 		while (!finished()) {
-			threadSleeper.accept(50l);
+			threadSleeper.accept(50);
 		}
 
 		return currentGameState;

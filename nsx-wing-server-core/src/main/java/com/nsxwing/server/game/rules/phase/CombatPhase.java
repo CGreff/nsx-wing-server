@@ -22,6 +22,7 @@ public class CombatPhase extends Phase {
 					+ response.getClass() + " from: "
 					+ response.getPlayerIdentifier());
 		}
+		return null;
 	}
 
 	@Override

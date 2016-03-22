@@ -8,6 +8,7 @@ import com.nsxwing.common.position.Maneuver;
 import com.nsxwing.common.position.ManeuverDifficulty;
 import com.nsxwing.common.state.GameState;
 import com.nsxwing.server.game.networking.GameServer;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.nsxwing.common.position.ManeuverDifficulty.GREEN;
+import static java.util.Collections.emptyMap;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -79,10 +82,13 @@ public class PlanningPhaseTest {
 
 	@Test
 	public void shouldHandleResponseAndAddManeuversToGameState() {
+		underTest.currentGameState = gameState;
 		Map<Integer, Maneuver> maneuvers = Collections.singletonMap(1, new Forward(1, GREEN));
 		doReturn(maneuvers).when(gameResponse).getAgentManeuvers();
+		doReturn(emptyMap()).when(gameState).getPlannedManeuvers();
 
 		GameState result = underTest.handleResponse(gameResponse);
-
+		assertThat(result.getPlannedManeuvers(), equalTo(maneuvers));
+		verify(gameResponse).getAgentManeuvers();
 	}
 }

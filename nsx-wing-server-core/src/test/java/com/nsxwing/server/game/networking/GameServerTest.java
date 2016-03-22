@@ -46,6 +46,8 @@ public class GameServerTest {
 	@Mock
 	private GameEvent event;
 
+	private int connection = 1;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -103,14 +105,20 @@ public class GameServerTest {
 	}
 
 	@Test
+	public void shouldBeAbleToSendEventsToIndividualClients() {
+		GameEvent event = mock(GameEvent.class);
+
+		underTest.sendToClient(connection, event);
+
+		verify(server).sendToTCP(1, event);
+	}
+
+	@Test
 	public void shouldBeAbleToRespondToIndividualClients() {
-		Connection connection = mock(Connection.class);
-		doReturn(1).when(connection).getID();
 		GameResponse response = mock(GameResponse.class);
 
 		underTest.sendToClient(connection, response);
 
-		verify(connection).getID();
 		verify(server).sendToTCP(1, response);
 	}
 

@@ -1,6 +1,5 @@
 package com.nsxwing.server.game.networking;
 
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.common.networking.config.KryoNetwork;
@@ -49,8 +48,12 @@ public class GameServer {
 		}
 	}
 
-	public void sendToClient(Connection connection, GameResponse response) {
-		server.sendToTCP(connection.getID(), response);
+	public void sendToClient(int connection, GameResponse response) {
+		server.sendToTCP(connection, response);
+	}
+
+	public void sendToClient(int connection, GameEvent event) {
+		server.sendToTCP(connection, event);
 	}
 
 	public boolean isRunning() {

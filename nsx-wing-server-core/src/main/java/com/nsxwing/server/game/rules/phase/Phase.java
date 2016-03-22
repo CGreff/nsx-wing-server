@@ -15,7 +15,8 @@ public abstract class Phase {
 	protected boolean handledChamp;
 	protected boolean handledScrub;
 	protected GameServer gameServer;
-	protected Consumer<Long> threadSleeper = this::sleep;
+	protected Consumer<Integer> threadSleeper = this::sleep;
+	protected GameState currentGameState;
 
 	public Phase(GameServer gameServer) {
 		this.gameServer = gameServer;
@@ -44,6 +45,11 @@ public abstract class Phase {
 		handledScrub = false;
 		return playPhase(gameState);
 	}
+
+//	protected void resetResponseHandlers() {
+//		handledChamp = false;
+//		handledScrub = false;
+//	}
 
 	public abstract GameState playPhase(GameState gameState);
 
