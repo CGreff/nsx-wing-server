@@ -22,11 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 import static com.nsxwing.common.networking.config.KryoNetwork.register;
 import static com.nsxwing.common.position.ManeuverDifficulty.GREEN;
 import static java.util.Arrays.asList;
+import static java.util.UUID.randomUUID;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -35,6 +37,7 @@ public class MockClient {
 
 	private Client client;
 	private PlayerIdentifier playerIdentifier;
+	private String agentIdentifier;
 
 	public MockClient() {
 		MockitoAnnotations.initMocks(this);
@@ -65,8 +68,9 @@ public class MockClient {
 
 		private ConnectionEvent buildConnectionEvent() {
 			ConnectionEvent connectionEvent = new ConnectionEvent();
+			agentIdentifier = randomUUID().toString();
 			agent = new PlayerAgent();
-			agent.setAgentId(0);
+			agent.setAgentId(agentIdentifier);
 			agent.setPosition(new Position(new Coordinate(0, 0), 0));
 			agent.setPilot(new Pilot(5));
 			connectionEvent.setPlayerAgents(asList(agent));
@@ -94,9 +98,9 @@ public class MockClient {
 		private PlanningResponse buildPlanningResponse() {
 			PlanningResponse response = new PlanningResponse();
 			response.setPlayerIdentifier(playerIdentifier);
-			HashMap<Integer, Maneuver> agentManeuvers = new HashMap<>();
+			HashMap<String, Maneuver> agentManeuvers = new HashMap<>();
 			Maneuver maneuver = new Forward(0, GREEN);
-			agentManeuvers.put(0, maneuver);
+			agentManeuvers.put(agentIdentifier, maneuver);
 			response.setAgentManeuvers(agentManeuvers);
 			return response;
 		}

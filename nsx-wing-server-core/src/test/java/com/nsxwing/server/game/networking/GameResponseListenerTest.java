@@ -3,7 +3,7 @@ package com.nsxwing.server.game.networking;
 import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
-import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.coordination.GameCoordinator;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

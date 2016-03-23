@@ -1,4 +1,4 @@
-package com.nsxwing.server.game;
+package com.nsxwing.server.game.coordination;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;

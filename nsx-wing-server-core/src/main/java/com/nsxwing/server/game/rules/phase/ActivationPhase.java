@@ -23,7 +23,7 @@ import static com.nsxwing.common.player.agent.PlayerAgent.ACTIVATION_ORDER_COMPA
 @Slf4j
 public class ActivationPhase extends Phase {
 
-	private Map<Integer, Maneuver> plannedManeuvers;
+	private Map<String, Maneuver> plannedManeuvers;
 	Function<GameState, GameState> gameStateManeuverStripper = this::cloneGameStateWithoutManeuvers;
 
 	public ActivationPhase(GameServer gameServer) {
@@ -64,7 +64,7 @@ public class ActivationPhase extends Phase {
 		PlayerIdentifier identifier = playerAgent.getOwner();
 		Player player = currentGameState.getPlayerFor(identifier);
 		prepareResponseHandler(identifier);
-		int agentId = playerAgent.getAgentId();
+		String agentId = playerAgent.getAgentId();
 		currentGameState.maneuverAgent(agentId, plannedManeuvers.get(agentId));
 
 		gameServer.sendToClient(player.getConnection(), new ActionEvent(currentGameState));

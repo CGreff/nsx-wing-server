@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 
 public class ActivationPhaseTest {
 
-	private static final int AGENT_ID = 0;
+	private static final String AGENT_ID = "0";
 
 	@InjectMocks
 	private ActivationPhase underTest;
@@ -64,7 +64,7 @@ public class ActivationPhaseTest {
 	private Function<GameState, GameState> gameStateManeuverStripper;
 
 	private List<PlayerAgent> agents;
-	private Map<Integer, Maneuver> plannedManeuvers;
+	private Map<String, Maneuver> plannedManeuvers;
 	private int connectionId = 1;
 
 	@Before

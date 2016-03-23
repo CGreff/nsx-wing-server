@@ -1,6 +1,6 @@
 package com.nsxwing.server.integration;
 
-import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.coordination.GameCoordinator;
 import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.integration.client.MockClient;

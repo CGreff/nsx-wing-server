@@ -8,6 +8,7 @@ import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.agent.PlayerAgent;
 import com.nsxwing.common.state.GameState;
 import com.nsxwing.common.state.GameStateFactory;
+import com.nsxwing.server.game.coordination.GameCoordinator;
 import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import org.junit.Before;

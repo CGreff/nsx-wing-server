@@ -1,6 +1,6 @@
 package com.nsxwing.server.main;
 
-import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.coordination.GameCoordinator;
 import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameServer;
 import lombok.SneakyThrows;

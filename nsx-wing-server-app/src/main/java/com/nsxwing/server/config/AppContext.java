@@ -2,7 +2,7 @@ package com.nsxwing.server.config;
 
 import com.esotericsoftware.kryonet.Server;
 import com.nsxwing.common.state.GameStateFactory;
-import com.nsxwing.server.game.GameCoordinator;
+import com.nsxwing.server.game.coordination.GameCoordinator;
 import com.nsxwing.server.game.engine.GameEngine;
 import com.nsxwing.server.game.networking.GameResponseListener;
 import com.nsxwing.server.game.networking.GameServer;

@@ -23,7 +23,7 @@ public class PlanningPhase extends Phase {
 	protected synchronized GameState handleResponse(GameResponse response) {
 		PlanningResponse planningResponse = (PlanningResponse) response;
 
-		Map<Integer, Maneuver> combinedManeuverMap = new HashMap<>();
+		Map<String, Maneuver> combinedManeuverMap = new HashMap<>();
 		combinedManeuverMap.putAll(currentGameState.getPlannedManeuvers());
 		combinedManeuverMap.putAll(planningResponse.getAgentManeuvers());
 

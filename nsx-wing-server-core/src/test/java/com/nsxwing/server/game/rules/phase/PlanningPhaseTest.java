@@ -83,7 +83,7 @@ public class PlanningPhaseTest {
 	@Test
 	public void shouldHandleResponseAndAddManeuversToGameState() {
 		underTest.currentGameState = gameState;
-		Map<Integer, Maneuver> maneuvers = Collections.singletonMap(1, new Forward(1, GREEN));
+		Map<String, Maneuver> maneuvers = Collections.singletonMap("1", new Forward(1, GREEN));
 		doReturn(maneuvers).when(gameResponse).getAgentManeuvers();
 		doReturn(emptyMap()).when(gameState).getPlannedManeuvers();
 
