@@ -48,11 +48,6 @@ public abstract class Phase {
 		return playPhase(gameState);
 	}
 
-//	protected void resetResponseHandlers() {
-//		handledChamp = false;
-//		handledScrub = false;
-//	}
-
 	public abstract GameState playPhase(GameState gameState);
 
 	@SneakyThrows
