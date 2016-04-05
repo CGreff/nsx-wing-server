@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,9 +23,11 @@ import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -133,5 +136,12 @@ public class ActivationPhaseTest {
 		underTest.playPhase(gameState);
 
 		verify(transferrableGameState).maneuverAgent(eq(AGENT_ID), eq(maneuver));
+	}
+
+	@Test
+	public void shouldRemoveManeuversFromTheGameState() {
+		GameState result = underTest.cloneGameStateWithoutManeuvers(gameState);
+
+		assertThat(result.getPlannedManeuvers(), is(new HashMap<>()));
 	}
 }

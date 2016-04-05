@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
 
+import static com.nsxwing.common.player.PlayerIdentifier.CHAMP;
+
 @Slf4j
 public abstract class Phase {
 
@@ -56,5 +58,10 @@ public abstract class Phase {
 	@SneakyThrows
 	private void sleep(long millis) {
 		Thread.sleep(millis);
+	}
+
+	protected void prepareResponseHandler(PlayerIdentifier identifier) {
+		handledChamp = identifier != CHAMP;
+		handledScrub = !handledChamp;
 	}
 }

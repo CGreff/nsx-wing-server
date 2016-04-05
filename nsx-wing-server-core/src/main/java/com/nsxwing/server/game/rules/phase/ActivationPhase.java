@@ -51,7 +51,7 @@ public class ActivationPhase extends Phase {
 		return currentGameState;
 	}
 
-	private GameState cloneGameStateWithoutManeuvers(GameState gameState) {
+	protected GameState cloneGameStateWithoutManeuvers(GameState gameState) {
 		return new GameState(
 				gameState.getChamp(),
 				gameState.getScrub(),
@@ -72,10 +72,5 @@ public class ActivationPhase extends Phase {
 		while (!finished()) {
 			threadSleeper.accept(50);
 		}
-	}
-
-	private void prepareResponseHandler(PlayerIdentifier identifier) {
-		handledChamp = identifier != CHAMP;
-		handledScrub = !handledChamp;
 	}
 }
