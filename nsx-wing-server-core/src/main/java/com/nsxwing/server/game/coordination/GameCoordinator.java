@@ -63,8 +63,8 @@ public class GameCoordinator {
 		gameEngine.handleResponse(response);
 	}
 
-	public GameState playGame() {
-		GameState gameState = gameStateFactory.buildInitialGameState(champ, scrub);
+	public GameState playGame(int numberOfTurns) {
+		GameState gameState = gameStateFactory.buildInitialGameState(champ, scrub, numberOfTurns);
 
 		while (!gameState.isGameComplete()) {
 			log.info("Playing turn: " + gameState.getTurnNumber());

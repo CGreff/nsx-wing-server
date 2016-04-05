@@ -63,7 +63,7 @@ public class GameCoordinatorTest {
 		MockitoAnnotations.initMocks(this);
 		doReturn(connectionId).when(connection).getID();
 		doReturn(singletonList(playerAgent)).when(connectionEvent).getPlayerAgents();
-		doReturn(gameState).when(gameStateFactory).buildInitialGameState(any(Player.class), any(Player.class));
+		doReturn(gameState).when(gameStateFactory).buildInitialGameState(any(Player.class), any(Player.class), any(int.class));
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class GameCoordinatorTest {
 		when(gameEngine.playTurn(any(GameState.class))).thenReturn(gameState);
 		when(gameState.isGameComplete()).thenReturn(false, false, true);
 
-		underTest.playGame();
+		underTest.playGame(100);
 
 		verify(gameEngine, times(2)).playTurn(any(GameState.class));
 	}

@@ -59,7 +59,8 @@ public class CombatPhase extends Phase {
 
 	@Override
 	public GameState playPhase(GameState gameState) {
-		currentCombatState = initCombatState(gameState);
+		currentGameState = gameState;
+		currentCombatState = initCombatState(currentGameState);
 
 		currentGameState.getPlayerAgents().stream()
 				.sorted(COMBAT_ORDER_COMPARATOR)
@@ -70,8 +71,8 @@ public class CombatPhase extends Phase {
 
 	private CombatState initCombatState(GameState gameState) {
 		CombatState state = new CombatState();
-		currentCombatState.setChamp(gameState.getChamp());
-		currentCombatState.setScrub(gameState.getScrub());
+		state.setChamp(gameState.getChamp());
+		state.setScrub(gameState.getScrub());
 		return state;
 	}
 
@@ -93,7 +94,7 @@ public class CombatPhase extends Phase {
 	}
 
 	private void resolveDamage() {
-//		currentGameState.applyCombat(currentCombatState);
+		currentGameState.applyCombat(currentCombatState);
 	}
 
 	private ModifyEvadeEvent buildModifyEvadeEvent() {
@@ -146,6 +147,6 @@ public class CombatPhase extends Phase {
 	}
 
 	private List<Target> determineTargets(PlayerAgent playerAgent, GameState gameState) {
-		return null;
+		return gameState.findTargetsFor(playerAgent);
 	}
 }

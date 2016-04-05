@@ -5,11 +5,19 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.nsxwing.common.component.pilot.Pilot;
 import com.nsxwing.common.gameplay.action.Focus;
+import com.nsxwing.common.gameplay.meta.combat.Target;
+import com.nsxwing.common.gameplay.meta.modifiers.NoOpModifier;
 import com.nsxwing.common.networking.io.event.ActionEvent;
+import com.nsxwing.common.networking.io.event.AttackEvent;
 import com.nsxwing.common.networking.io.event.ConnectionEvent;
+import com.nsxwing.common.networking.io.event.ModifyAttackEvent;
+import com.nsxwing.common.networking.io.event.ModifyEvadeEvent;
 import com.nsxwing.common.networking.io.event.PlanningEvent;
 import com.nsxwing.common.networking.io.response.ActionResponse;
+import com.nsxwing.common.networking.io.response.AttackResponse;
 import com.nsxwing.common.networking.io.response.ConnectionResponse;
+import com.nsxwing.common.networking.io.response.ModifyAttackResponse;
+import com.nsxwing.common.networking.io.response.ModifyEvadeResponse;
 import com.nsxwing.common.networking.io.response.PlanningResponse;
 import com.nsxwing.common.player.PlayerIdentifier;
 import com.nsxwing.common.player.agent.PlayerAgent;
@@ -22,15 +30,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import static com.nsxwing.common.networking.config.KryoNetwork.PORT;
 import static com.nsxwing.common.networking.config.KryoNetwork.register;
 import static com.nsxwing.common.position.ManeuverDifficulty.GREEN;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 
 @Slf4j
 public class MockClient {
@@ -72,7 +77,7 @@ public class MockClient {
 			agent = new PlayerAgent();
 			agent.setAgentId(agentIdentifier);
 			agent.setPosition(new Position(new Coordinate(0, 0), 0));
-			agent.setPilot(new Pilot(5));
+			agent.setPilot(new Pilot(5, 3, 3));
 			connectionEvent.setPlayerAgents(asList(agent));
 			return connectionEvent;
 		}
@@ -85,6 +90,12 @@ public class MockClient {
 				client.sendTCP(buildPlanningResponse());
 			} else if (object instanceof ActionEvent) {
 				client.sendTCP(buildActionResponse());
+			} else if (object instanceof AttackEvent) {
+				client.sendTCP(buildAttackResponse((AttackEvent) object));
+			} else if (object instanceof ModifyAttackEvent) {
+				client.sendTCP(buildModifyAttackResponse());
+			} else if (object instanceof ModifyEvadeEvent) {
+				client.sendTCP(buildModifyEvadeResponse());
 			}
 		}
 
@@ -104,5 +115,34 @@ public class MockClient {
 			response.setAgentManeuvers(agentManeuvers);
 			return response;
 		}
+
+		private AttackResponse buildAttackResponse(AttackEvent event) {
+			AttackResponse response = new AttackResponse();
+			response.setPlayerIdentifier(playerIdentifier);
+			response.setTarget(chooseTarget(event));
+			return response;
+		}
+	}
+
+	private Target chooseTarget(AttackEvent event) {
+		if (event.getTargets().isEmpty()) {
+			return null;
+		}
+
+		return event.getTargets().get(0);
+	}
+
+	private ModifyAttackResponse buildModifyAttackResponse() {
+		ModifyAttackResponse response = new ModifyAttackResponse();
+		response.setPlayerIdentifier(playerIdentifier);
+		response.setDiceModifiers(asList(new NoOpModifier()));
+		return response;
+	}
+
+	private ModifyEvadeResponse buildModifyEvadeResponse() {
+		ModifyEvadeResponse response = new ModifyEvadeResponse();
+		response.setPlayerIdentifier(playerIdentifier);
+		response.setDiceModifiers(asList(new NoOpModifier()));
+		return response;
 	}
 }

@@ -14,7 +14,7 @@ public class GameCompletionTest extends ContextInitializer {
 
 	@Test
 	public void shouldBeAbleToPlayToTheEndOfAGame() {
-		GameState endGameState = gameCoordinator.playGame();
+		GameState endGameState = gameCoordinator.playGame(5);
 
 		assertThat(endGameState, is(not(nullValue())));
 		assertTrue(endGameState.isGameComplete());
