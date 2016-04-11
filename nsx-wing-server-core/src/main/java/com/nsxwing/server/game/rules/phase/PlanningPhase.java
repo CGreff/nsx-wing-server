@@ -23,18 +23,23 @@ public class PlanningPhase extends Phase {
 	protected synchronized GameState handleResponse(GameResponse response) {
 		PlanningResponse planningResponse = (PlanningResponse) response;
 
-		Map<String, Maneuver> combinedManeuverMap = new HashMap<>();
-		combinedManeuverMap.putAll(currentGameState.getPlannedManeuvers());
-		combinedManeuverMap.putAll(planningResponse.getAgentManeuvers());
+		Map<String, Maneuver> maneuvers = combineManeuvers(currentGameState.getPlannedManeuvers(), planningResponse.getAgentManeuvers());
 
 		currentGameState = new GameState(
 				currentGameState.getChamp(),
 				currentGameState.getScrub(),
 				currentGameState.getPlayerAgents(),
-				combinedManeuverMap,
+				maneuvers,
 				currentGameState.getTurnNumber());
 
 		return currentGameState;
+	}
+
+	private Map<String, Maneuver> combineManeuvers(Map<String, Maneuver> currentManeuvers, Map<String, Maneuver> agentManeuvers) {
+		Map<String, Maneuver> combinedManeuverMap = new HashMap<>();
+		combinedManeuverMap.putAll(currentManeuvers);
+		combinedManeuverMap.putAll(agentManeuvers);
+		return combinedManeuverMap;
 	}
 
 	@Override
@@ -43,15 +48,22 @@ public class PlanningPhase extends Phase {
 		currentGameState = gameState;
 		currentGameState.setPlannedManeuvers(new HashMap<>());
 
-		PlanningEvent event = new PlanningEvent();
-		event.setGameState(currentGameState);
+		sendPlanningEvent();
 
-		gameServer.broadcastEvent(event);
+		waitForResponses();
 
+		return currentGameState;
+	}
+
+	private void waitForResponses() {
 		while (!finished()) {
 			threadSleeper.accept(50);
 		}
+	}
 
-		return currentGameState;
+	private void sendPlanningEvent() {
+		PlanningEvent event = new PlanningEvent();
+		event.setGameState(currentGameState);
+		gameServer.broadcastEvent(event);
 	}
 }
