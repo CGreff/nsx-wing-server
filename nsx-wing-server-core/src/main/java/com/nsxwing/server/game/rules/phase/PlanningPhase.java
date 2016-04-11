@@ -55,12 +55,6 @@ public class PlanningPhase extends Phase {
 		return currentGameState;
 	}
 
-	private void waitForResponses() {
-		while (!finished()) {
-			threadSleeper.accept(50);
-		}
-	}
-
 	private void sendPlanningEvent() {
 		PlanningEvent event = new PlanningEvent();
 		event.setGameState(currentGameState);

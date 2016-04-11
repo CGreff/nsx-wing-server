@@ -61,16 +61,17 @@ public class ActivationPhase extends Phase {
 	}
 
 	private void activateAgent(PlayerAgent playerAgent) {
-		PlayerIdentifier identifier = playerAgent.getOwner();
-		Player player = currentGameState.getPlayerFor(identifier);
-		prepareResponseHandler(identifier);
-		String agentId = playerAgent.getAgentId();
+		Player currentPlayer = currentGameState.getPlayerFor(playerAgent);
+		prepareResponseHandler(currentPlayer.getIdentifier());
+
+		maneuverAgent(playerAgent.getAgentId());
+
+		gameServer.sendToClient(currentPlayer.getConnection(), new ActionEvent(currentGameState));
+
+		waitForResponses();
+	}
+
+	private void maneuverAgent(String agentId) {
 		currentGameState.maneuverAgent(agentId, plannedManeuvers.get(agentId));
-
-		gameServer.sendToClient(player.getConnection(), new ActionEvent(currentGameState));
-
-		while (!finished()) {
-			threadSleeper.accept(50);
-		}
 	}
 }

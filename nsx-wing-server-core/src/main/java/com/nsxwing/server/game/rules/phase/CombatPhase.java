@@ -5,19 +5,18 @@ import com.nsxwing.common.networking.io.event.AttackEvent;
 import com.nsxwing.common.networking.io.event.GameEvent;
 import com.nsxwing.common.networking.io.event.ModifyAttackEvent;
 import com.nsxwing.common.networking.io.event.ModifyEvadeEvent;
-import com.nsxwing.common.networking.io.response.AttackResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
-import com.nsxwing.common.networking.io.response.ModifyAttackResponse;
-import com.nsxwing.common.networking.io.response.ModifyEvadeResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.PlayerIdentifier;
 import com.nsxwing.common.player.agent.PlayerAgent;
 import com.nsxwing.common.state.CombatState;
 import com.nsxwing.common.state.GameState;
+import com.nsxwing.server.game.networking.combat.CombatResponseHandler;
 import com.nsxwing.server.game.networking.GameServer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.nsxwing.common.player.agent.PlayerAgent.COMBAT_ORDER_COMPARATOR;
 
@@ -25,36 +24,18 @@ import static com.nsxwing.common.player.agent.PlayerAgent.COMBAT_ORDER_COMPARATO
 public class CombatPhase extends Phase {
 
 	private CombatState currentCombatState;
+	private Map<Class, CombatResponseHandler> responseHandlers;
 
-	public CombatPhase(GameServer gameServer) {
+	public CombatPhase(GameServer gameServer, Map<Class, CombatResponseHandler> responseHandlers) {
 		super(gameServer);
+		this.responseHandlers = responseHandlers;
 	}
 
 	@Override
 	protected synchronized GameState handleResponse(GameResponse response) {
-		if (response instanceof AttackResponse) {
-			handleAttackResponse((AttackResponse) response);
-		} else if (response instanceof ModifyAttackResponse) {
-			handleModifyAttackResponse((ModifyAttackResponse) response);
-		} else if (response instanceof ModifyEvadeResponse) {
-			handleModifyDefenseResponse((ModifyEvadeResponse) response);
-		}
+		currentCombatState = responseHandlers.get(response.getClass()).handleResponse(response, currentCombatState);
 
 		return currentGameState;
-	}
-
-	private void handleModifyDefenseResponse(ModifyEvadeResponse response) {
-		response.getDiceModifiers().stream()
-				.forEach(diceModifer -> diceModifer.modify(currentCombatState.getEvadeDice()));
-	}
-
-	private void handleModifyAttackResponse(ModifyAttackResponse response) {
-		response.getDiceModifiers().stream()
-				.forEach(diceModifer -> diceModifer.modify(currentCombatState.getAttackDice()));
-	}
-
-	private void handleAttackResponse(AttackResponse response) {
-		currentCombatState.setDefender(response.getTarget());
 	}
 
 	@Override
@@ -105,10 +86,7 @@ public class CombatPhase extends Phase {
 	}
 
 	private void modifyDice(PlayerAgent agent, GameEvent event) {
-		Player player = prepareEvent(agent);
-
-		gameServer.sendToClient(player.getConnection(), event);
-
+		sendForPlayerAgent(agent, event);
 		waitForResponses();
 	}
 
@@ -118,35 +96,17 @@ public class CombatPhase extends Phase {
 				currentCombatState.getAttackDice());
 	}
 
-	private void waitForResponses() {
-		while (!finished()) {
-			threadSleeper.accept(50);
-		}
-	}
-
 	private void startAttack(PlayerAgent playerAgent) {
+		currentCombatState = initCombatState(currentGameState);
 		currentCombatState.setAttacker(playerAgent);
 		currentCombatState.setDefender(null);
 	}
 
 	private void chooseTarget(PlayerAgent playerAgent) {
-		Player player = prepareEvent(playerAgent);
+		List<Target> targets = currentGameState.findTargetsFor(playerAgent);
 
-		List<Target> targets = determineTargets(playerAgent, currentGameState);
-
-		gameServer.sendToClient(player.getConnection(), new AttackEvent(playerAgent, targets));
+		sendForPlayerAgent(playerAgent, new AttackEvent(playerAgent, targets));
 
 		waitForResponses();
-	}
-
-	private Player prepareEvent(PlayerAgent playerAgent) {
-		PlayerIdentifier identifier = playerAgent.getOwner();
-		Player player = currentGameState.getPlayerFor(identifier);
-		prepareResponseHandler(identifier);
-		return player;
-	}
-
-	private List<Target> determineTargets(PlayerAgent playerAgent, GameState gameState) {
-		return gameState.findTargetsFor(playerAgent);
 	}
 }
