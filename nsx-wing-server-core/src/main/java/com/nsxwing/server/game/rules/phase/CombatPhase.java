@@ -2,12 +2,9 @@ package com.nsxwing.server.game.rules.phase;
 
 import com.nsxwing.common.gameplay.meta.combat.Target;
 import com.nsxwing.common.networking.io.event.AttackEvent;
-import com.nsxwing.common.networking.io.event.GameEvent;
 import com.nsxwing.common.networking.io.event.ModifyAttackEvent;
 import com.nsxwing.common.networking.io.event.ModifyEvadeEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
-import com.nsxwing.common.player.Player;
-import com.nsxwing.common.player.PlayerIdentifier;
 import com.nsxwing.common.player.agent.PlayerAgent;
 import com.nsxwing.common.state.CombatState;
 import com.nsxwing.common.state.GameState;
@@ -41,7 +38,6 @@ public class CombatPhase extends Phase {
 	@Override
 	public GameState playPhase(GameState gameState) {
 		currentGameState = gameState;
-		currentCombatState = initCombatState(currentGameState);
 
 		currentGameState.getPlayerAgents().stream()
 				.sorted(COMBAT_ORDER_COMPARATOR)
@@ -61,21 +57,27 @@ public class CombatPhase extends Phase {
 		startAttack(playerAgent);
 		chooseTarget(playerAgent);
 
-		currentCombatState.rollAttack();
+		handleAttackDice();
 
-		modifyDice(currentCombatState.getDefender().getTargetAgent(), buildModifyAttackEvent());
-		modifyDice(currentCombatState.getAttacker(), buildModifyAttackEvent());
+		handleEvadeDice();
 
-		currentCombatState.rollEvade();
-
-		modifyDice(currentCombatState.getAttacker(), buildModifyEvadeEvent());
-		modifyDice(currentCombatState.getDefender().getTargetAgent(), buildModifyEvadeEvent());
-
-		resolveDamage();
+		currentGameState.applyCombat(currentCombatState);
 	}
 
-	private void resolveDamage() {
-		currentGameState.applyCombat(currentCombatState);
+	private void handleEvadeDice() {
+		currentCombatState.rollEvade();
+
+		sendForPlayerAgent(currentCombatState.getAttacker(), buildModifyEvadeEvent());
+		sendForPlayerAgent(currentCombatState.getDefender().getTargetAgent(), buildModifyEvadeEvent());
+
+	}
+
+	private void handleAttackDice() {
+		currentCombatState.rollAttack();
+
+		sendForPlayerAgent(currentCombatState.getDefender().getTargetAgent(), buildModifyAttackEvent());
+		sendForPlayerAgent(currentCombatState.getAttacker(), buildModifyAttackEvent());
+
 	}
 
 	private ModifyEvadeEvent buildModifyEvadeEvent() {
@@ -83,11 +85,6 @@ public class CombatPhase extends Phase {
 				currentCombatState.getDefender(),
 				currentCombatState.getAttackDice(),
 				currentCombatState.getEvadeDice());
-	}
-
-	private void modifyDice(PlayerAgent agent, GameEvent event) {
-		sendForPlayerAgent(agent, event);
-		waitForResponses();
 	}
 
 	private ModifyAttackEvent buildModifyAttackEvent() {
@@ -106,7 +103,5 @@ public class CombatPhase extends Phase {
 		List<Target> targets = currentGameState.findTargetsFor(playerAgent);
 
 		sendForPlayerAgent(playerAgent, new AttackEvent(playerAgent, targets));
-
-		waitForResponses();
 	}
 }

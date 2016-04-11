@@ -1,6 +1,7 @@
 package com.nsxwing.server.game.rules.phase;
 
 import com.nsxwing.common.networking.io.event.GameEvent;
+import com.nsxwing.common.networking.io.event.GameplayEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
 import com.nsxwing.common.player.PlayerIdentifier;
@@ -73,5 +74,6 @@ public abstract class Phase {
 		Player player = currentGameState.getPlayerFor(playerAgent);
 		prepareResponseHandler(player.getIdentifier());
 		gameServer.sendToClient(player.getConnection(), event);
+		waitForResponses();
 	}
 }

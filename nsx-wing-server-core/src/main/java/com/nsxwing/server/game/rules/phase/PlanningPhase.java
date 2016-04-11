@@ -50,14 +50,11 @@ public class PlanningPhase extends Phase {
 
 		sendPlanningEvent();
 
-		waitForResponses();
-
 		return currentGameState;
 	}
 
 	private void sendPlanningEvent() {
-		PlanningEvent event = new PlanningEvent();
-		event.setGameState(currentGameState);
-		gameServer.broadcastEvent(event);
+		gameServer.broadcastEvent(new PlanningEvent(currentGameState));
+		waitForResponses();
 	}
 }

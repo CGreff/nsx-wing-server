@@ -1,6 +1,7 @@
 package com.nsxwing.server.game.rules.phase;
 
 import com.nsxwing.common.networking.io.event.ActionEvent;
+import com.nsxwing.common.networking.io.event.GameEvent;
 import com.nsxwing.common.networking.io.response.ActionResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.Player;
@@ -61,14 +62,9 @@ public class ActivationPhase extends Phase {
 	}
 
 	private void activateAgent(PlayerAgent playerAgent) {
-		Player currentPlayer = currentGameState.getPlayerFor(playerAgent);
-		prepareResponseHandler(currentPlayer.getIdentifier());
-
 		maneuverAgent(playerAgent.getAgentId());
 
-		gameServer.sendToClient(currentPlayer.getConnection(), new ActionEvent(currentGameState));
-
-		waitForResponses();
+		sendForPlayerAgent(playerAgent, new ActionEvent(currentGameState));
 	}
 
 	private void maneuverAgent(String agentId) {
