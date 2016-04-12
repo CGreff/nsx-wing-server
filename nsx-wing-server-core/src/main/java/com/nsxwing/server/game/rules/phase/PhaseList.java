@@ -4,6 +4,7 @@ import com.nsxwing.common.networking.io.response.AttackResponse;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.networking.io.response.ModifyAttackResponse;
 import com.nsxwing.common.networking.io.response.ModifyEvadeResponse;
+import com.nsxwing.common.state.CombatStateFactory;
 import com.nsxwing.server.game.networking.GameServer;
 import com.nsxwing.server.game.networking.combat.AttackResponseHandler;
 import com.nsxwing.server.game.networking.combat.CombatResponseHandler;
@@ -27,7 +28,7 @@ public class PhaseList {
 		phases = asList(
 				new PlanningPhase(gameServer),
 				new ActivationPhase(gameServer),
-				new CombatPhase(gameServer, createCombatResponseHandlers()));
+				new CombatPhase(gameServer, new CombatStateFactory(), createCombatResponseHandlers()));
 	}
 
 	Map<Class, CombatResponseHandler> createCombatResponseHandlers() {

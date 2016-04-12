@@ -66,7 +66,7 @@ public abstract class Phase {
 
 	protected void waitForResponses() {
 		while (!finished()) {
-			threadSleeper.accept(50);
+			threadSleeper.accept(5);
 		}
 	}
 

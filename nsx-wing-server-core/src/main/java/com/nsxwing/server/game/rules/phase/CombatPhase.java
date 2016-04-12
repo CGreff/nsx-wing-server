@@ -7,6 +7,7 @@ import com.nsxwing.common.networking.io.event.ModifyEvadeEvent;
 import com.nsxwing.common.networking.io.response.GameResponse;
 import com.nsxwing.common.player.agent.PlayerAgent;
 import com.nsxwing.common.state.CombatState;
+import com.nsxwing.common.state.CombatStateFactory;
 import com.nsxwing.common.state.GameState;
 import com.nsxwing.server.game.networking.combat.CombatResponseHandler;
 import com.nsxwing.server.game.networking.GameServer;
@@ -21,10 +22,12 @@ import static com.nsxwing.common.player.agent.PlayerAgent.COMBAT_ORDER_COMPARATO
 public class CombatPhase extends Phase {
 
 	private CombatState currentCombatState;
+	private CombatStateFactory combatStateFactory;
 	private Map<Class, CombatResponseHandler> responseHandlers;
 
-	public CombatPhase(GameServer gameServer, Map<Class, CombatResponseHandler> responseHandlers) {
+	public CombatPhase(GameServer gameServer, CombatStateFactory combatStateFactory, Map<Class, CombatResponseHandler> responseHandlers) {
 		super(gameServer);
+		this.combatStateFactory = combatStateFactory;
 		this.responseHandlers = responseHandlers;
 	}
 
@@ -44,13 +47,6 @@ public class CombatPhase extends Phase {
 				.forEach(this::activateAgent);
 
 		return currentGameState;
-	}
-
-	private CombatState initCombatState(GameState gameState) {
-		CombatState state = new CombatState();
-		state.setChamp(gameState.getChamp());
-		state.setScrub(gameState.getScrub());
-		return state;
 	}
 
 	private void activateAgent(PlayerAgent playerAgent) {
@@ -94,7 +90,7 @@ public class CombatPhase extends Phase {
 	}
 
 	private void startAttack(PlayerAgent playerAgent) {
-		currentCombatState = initCombatState(currentGameState);
+		currentCombatState = combatStateFactory.buildInitialCombatState(currentGameState);
 		currentCombatState.setAttacker(playerAgent);
 		currentCombatState.setDefender(null);
 	}

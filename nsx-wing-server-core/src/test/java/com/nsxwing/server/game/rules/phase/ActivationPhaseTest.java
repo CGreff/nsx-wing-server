@@ -92,7 +92,6 @@ public class ActivationPhaseTest {
 		doReturn(AGENT_ID).when(agent).getAgentId();
 		doReturn(connectionId).when(player).getConnection();
 		doReturn(agents).when(transferrableGameState).getPlayerAgents();
-		doReturn(player).when(transferrableGameState).getPlayerFor(CHAMP);
 		doReturn(player).when(transferrableGameState).getPlayerFor(agent);
 		doReturn(plannedManeuvers).when(gameState).getPlannedManeuvers();
 	}
